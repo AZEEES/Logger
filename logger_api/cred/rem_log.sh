@@ -1,0 +1,1 @@
+ssh -i "Logger_key.pem" ubuntu@ec2-3-134-88-27.us-east-2.compute.amazonaws.com
