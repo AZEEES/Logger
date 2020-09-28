@@ -24,10 +24,6 @@ const StructureSchema = mongoose.Schema({
     high_lim : {
         type : String,
         required : false
-    },
-    tdat : {
-        type : String,
-        required : false
     }
 });
 
