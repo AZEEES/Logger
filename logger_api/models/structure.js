@@ -12,6 +12,18 @@ const StructureSchema = mongoose.Schema({
     parent : {
         type : String, 
         required : true
+    },
+    dtype : {
+        type : String,
+        required : true
+    },
+    low_lim : {
+        type : String,
+        required : false
+    },
+    high_lim : {
+        type : String,
+        required : false
     }
 });
 
