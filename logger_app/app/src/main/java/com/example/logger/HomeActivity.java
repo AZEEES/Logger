@@ -72,7 +72,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 homeTextView.setText("Fetching data from server : " + server_ip);
                 Intent nodeIntent = new Intent(HomeActivity.this, NodeActivity.class);
-                nodeIntent.putExtra("node_id", "Abou");
+                nodeIntent.putExtra("node_id", "null");
                 startActivity(nodeIntent);
 //                fetch_data(server_ip, homeTextView);
             }
