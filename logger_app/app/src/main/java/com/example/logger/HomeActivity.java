@@ -1,5 +1,6 @@
 package com.example.logger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -14,6 +15,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -66,7 +71,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 homeTextView.setText("Fetching data from server : " + server_ip);
-                fetch_data(server_ip, homeTextView);
+                Intent nodeIntent = new Intent(HomeActivity.this, NodeActivity.class);
+                nodeIntent.putExtra("node_id", "null");
+                startActivity(nodeIntent);
+//                fetch_data(server_ip, homeTextView);
             }
         });
     }
@@ -78,6 +86,15 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         homeTextView.setText(response.toString());
+                        try {
+//                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = new JSONArray(response);
+                            homeTextView.setText(jsonArray.get(0).toString());
+
+                        } catch (JSONException e) {
+                            Toast.makeText(HomeActivity.this, "Error Occured", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
