@@ -15,7 +15,7 @@
             android:id="@+id/home_fetch_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fetch Data"/>
+            android:text="Fill Data"/>
 
         <TextView
             android:id="@+id/text_home"

@@ -63,7 +63,7 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         final TextView homeTextView = findViewById(R.id.home_text);
-        EditText serverIpView = findViewById(R.id.home_server_ip);
+//        EditText serverIpView = findViewById(R.id.home_server_ip);
         Button fetchButtonView = findViewById(R.id.home_fetch_btn);
 
         final String server_ip = "3.134.88.27:3000";

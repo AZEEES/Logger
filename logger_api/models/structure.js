@@ -23,7 +23,7 @@ const StructureSchema = mongoose.Schema({
     },
     slider_entries : {
         type : String,
-        required : true
+        required : false
     },
     low_lim : {
         type : String,

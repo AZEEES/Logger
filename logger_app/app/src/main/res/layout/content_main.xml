@@ -12,17 +12,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/home_server_ip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Server Ip"/>
-
         <Button
             android:id="@+id/home_fetch_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fetch Data"/>
+            android:text="Fill Data"/>
 
         <TextView
             android:layout_width="match_parent"

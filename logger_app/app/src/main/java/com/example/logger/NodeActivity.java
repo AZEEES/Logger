@@ -96,21 +96,21 @@ public class NodeActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        TextView nodeTextView = findViewById(R.id.node_text);
-                        nodeTextView.setText(response);
+//                        TextView nodeTextView = findViewById(R.id.node_text);
+//                        nodeTextView.setText(response);
                         try {
 //                            JSONObject jsonObject = new JSONObject(response);
                             JSONArray jsonArray = new JSONArray(response);
-//                            ArrayList<Node> nodeList = new ArrayList<Node>();
-//                            for(int i=0; i<jsonArray.length();i++){
-//                                JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
-//                                Node n1 = new Node(jsonObject.getString("id"), jsonObject.getString("name"));
-//                                nodeList.add(n1);
-//                            }
-//                            NodeAdapter nodeAdapter = new NodeAdapter(NodeActivity.this, nodeList);
-//                            GridView nodegridView = (GridView) findViewById(R.id.node_grid);
-//                            nodegridView.setAdapter(nodeAdapter);
-//                            setGridViewHeightBasedOnChildren(nodegridView, 3);
+                            ArrayList<Node> nodeList = new ArrayList<Node>();
+                            for(int i=0; i<jsonArray.length();i++){
+                                JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
+                                Node n1 = new Node(jsonObject.getString("id"), jsonObject.getString("name"));
+                                nodeList.add(n1);
+                            }
+                            NodeAdapter nodeAdapter = new NodeAdapter(NodeActivity.this, nodeList);
+                            GridView nodegridView = (GridView) findViewById(R.id.node_grid);
+                            nodegridView.setAdapter(nodeAdapter);
+                            setGridViewHeightBasedOnChildren(nodegridView, 3);
 
                         } catch (JSONException e) {
                             Toast.makeText(NodeActivity.this, "JSON Error Occured", Toast.LENGTH_SHORT)
