@@ -91,7 +91,7 @@ public class NodeActivity extends AppCompatActivity {
     }
 
     public void fetch_node(String server_ip, final String parent_node_id) {
-        final String url = "http://" + server_ip + "/api/structure/getchilds";
+        final String url = "http://" + server_ip + "/api/structure";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -129,7 +129,7 @@ public class NodeActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("parent", parent_node_id);
+                params.put("parent", "null");
                 return params;
             }
         };
