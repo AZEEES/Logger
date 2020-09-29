@@ -32,6 +32,18 @@ const StructureSchema = mongoose.Schema({
     high_lim : {
         type : String,
         required : false
+    },
+    disable_entry : {
+        type : String, 
+        required : false
+    },
+    hint_text : {
+        type : String,
+        required : false
+    }, 
+    default_value : {
+        type : String, 
+        required : false
     }
 });
 
