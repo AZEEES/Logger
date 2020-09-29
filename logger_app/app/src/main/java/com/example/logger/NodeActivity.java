@@ -91,7 +91,7 @@ public class NodeActivity extends AppCompatActivity {
     }
 
     public void fetch_node(String server_ip, final String parent_node_id) {
-        final String url = "http://" + server_ip + "/api/structure";
+        final String url = "http://" + server_ip + "/api/structure/getchilds";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

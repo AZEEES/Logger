@@ -42,7 +42,7 @@ router.delete('/',(req, res, next)=>{
 //Fetch all entries by regex 
 router.get('/getchilds', (req, res, next)=>{
     var parent = req.query.parent;
-    console.log(parent)
+    console.log(req)
     Structure.find({
         // parent : {$regex: "^" + parent, $options:"i"}
         parent : parent
