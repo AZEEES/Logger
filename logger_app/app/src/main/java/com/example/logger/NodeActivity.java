@@ -91,8 +91,8 @@ public class NodeActivity extends AppCompatActivity {
     }
 
     public void fetch_node(String server_ip, final String parent_node_id) {
-        final String url = "http://" + server_ip + "/api/structure/getchilds";
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+        final String url = "http://" + server_ip + "/api/structure/getchilds?parent=" + parent_node_id;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -125,14 +125,7 @@ public class NodeActivity extends AppCompatActivity {
                                 .show();
 //                        homeTextView.setText("Server issue on " + url + "\n" + error.toString());
                     }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("parent", "null");
-                return params;
-            }
-        };
+                });
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(stringRequest);
     }
