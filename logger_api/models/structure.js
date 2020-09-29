@@ -13,7 +13,15 @@ const StructureSchema = mongoose.Schema({
         type : String, 
         required : true
     },
+    level_leaf : {
+        type : String,
+        required : false
+    },
     dtype : {
+        type : String,
+        required : true
+    },
+    slider_entries : {
         type : String,
         required : true
     },
