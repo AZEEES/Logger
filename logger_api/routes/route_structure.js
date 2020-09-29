@@ -40,9 +40,8 @@ router.delete('/',(req, res, next)=>{
 })
 
 //Fetch all entries by regex 
-router.post('/getchilds', (req, res, next)=>{
+router.get('/getchilds', (req, res, next)=>{
     var parent = req.query.parent;
-    console.log(req)
     Structure.find({
         // parent : {$regex: "^" + parent, $options:"i"}
         parent : parent
