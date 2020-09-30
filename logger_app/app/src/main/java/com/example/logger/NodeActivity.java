@@ -48,24 +48,12 @@ public class NodeActivity extends AppCompatActivity {
         else{
             parent_nodeId = "na";
         }
-        String server_ip = "3.134.88.27:3000";
+//        String server_ip = "3.134.88.27:3000";
 
         TextView nodeTextView = findViewById(R.id.node_text);
         nodeTextView.setText("parent_node : " + parent_nodeId);
 
         get_node(parent_nodeId);
-
-//        fetch_node(server_ip, parent_nodeId);
-
-//        ArrayList<Node> nodeList = new ArrayList<Node>();
-//        Node n1 = new Node("M0", "Node 0");
-//        nodeList.add(n1);
-//
-//        NodeAdapter nodeAdapter = new NodeAdapter(NodeActivity.this, nodeList);
-//        GridView nodegridView = (GridView) findViewById(R.id.node_grid);
-//        nodegridView.setAdapter(nodeAdapter);
-//        setGridViewHeightBasedOnChildren(nodegridView, 3);
-
     }
 
     public void setGridViewHeightBasedOnChildren(GridView gridView, int columns) {
@@ -113,43 +101,43 @@ public class NodeActivity extends AppCompatActivity {
         realm.close();
     }
 
-    public void fetch_node(String server_ip, final String parent_node_id) {
-        final String url = "http://" + server_ip + "/api/structure/getchilds?parent=" + parent_node_id;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-//                        TextView nodeTextView = findViewById(R.id.node_text);
-//                        nodeTextView.setText(response);
-                        try {
-//                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray jsonArray = new JSONArray(response);
-                            ArrayList<Node> nodeList = new ArrayList<Node>();
-                            for(int i=0; i<jsonArray.length();i++){
-                                JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
-                                Node n1 = new Node(jsonObject.getString("id"), jsonObject.getString("name"));
-                                nodeList.add(n1);
-                            }
-                            NodeAdapter nodeAdapter = new NodeAdapter(NodeActivity.this, nodeList);
-                            GridView nodegridView = (GridView) findViewById(R.id.node_grid);
-                            nodegridView.setAdapter(nodeAdapter);
-                            setGridViewHeightBasedOnChildren(nodegridView, 3);
-
-                        } catch (JSONException e) {
-                            Toast.makeText(NodeActivity.this, "JSON Error Occured", Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(NodeActivity.this, "Server issue", Toast.LENGTH_SHORT)
-                                .show();
-//                        homeTextView.setText("Server issue on " + url + "\n" + error.toString());
-                    }
-                });
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(stringRequest);
-    }
+//    public void fetch_node(String server_ip, final String parent_node_id) {
+//        final String url = "http://" + server_ip + "/api/structure/getchilds?parent=" + parent_node_id;
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+////                        TextView nodeTextView = findViewById(R.id.node_text);
+////                        nodeTextView.setText(response);
+//                        try {
+////                            JSONObject jsonObject = new JSONObject(response);
+//                            JSONArray jsonArray = new JSONArray(response);
+//                            ArrayList<Node> nodeList = new ArrayList<Node>();
+//                            for(int i=0; i<jsonArray.length();i++){
+//                                JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
+//                                Node n1 = new Node(jsonObject.getString("id"), jsonObject.getString("name"));
+//                                nodeList.add(n1);
+//                            }
+//                            NodeAdapter nodeAdapter = new NodeAdapter(NodeActivity.this, nodeList);
+//                            GridView nodegridView = (GridView) findViewById(R.id.node_grid);
+//                            nodegridView.setAdapter(nodeAdapter);
+//                            setGridViewHeightBasedOnChildren(nodegridView, 3);
+//
+//                        } catch (JSONException e) {
+//                            Toast.makeText(NodeActivity.this, "JSON Error Occured", Toast.LENGTH_SHORT)
+//                                    .show();
+//                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Toast.makeText(NodeActivity.this, "Server issue", Toast.LENGTH_SHORT)
+//                                .show();
+////                        homeTextView.setText("Server issue on " + url + "\n" + error.toString());
+//                    }
+//                });
+//        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+//        requestQueue.add(stringRequest);
+//    }
 }

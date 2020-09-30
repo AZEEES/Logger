@@ -40,9 +40,21 @@ router.delete('/',(req, res, next)=>{
 })
 
 //deleting structures
-router.delete('/del',(req, res, next)=>{
+router.delete('/delete',(req, res, next)=>{
     var id = req.query.id;
     Structure.remove({id : id}, (err, result)=>{
+        if(err){
+            res.json("Error : " + err);
+        }
+        else{
+            res.json("Succesfully deleted");
+        }
+    } );
+})
+
+//deleting structures
+router.delete('/delete_all',(req, res, next)=>{
+    Structure.remove({}, (err, result)=>{
         if(err){
             res.json("Error : " + err);
         }
