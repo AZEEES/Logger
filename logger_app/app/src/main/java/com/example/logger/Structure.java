@@ -15,6 +15,7 @@ public class Structure extends RealmObject {
     private String disable_entry;
     private String hint_text;
     private String default_value;
+    private String value;
 
     public String getId() { return id; }
     public String getName(){ return name; }
@@ -27,6 +28,7 @@ public class Structure extends RealmObject {
     public String getDisable_entry() { return disable_entry; }
     public String getHintText() { return hint_text; }
     public String getDefault_value() { return default_value; }
+    public String getValue(){ return value; }
 
     public void setId(String id) { this.id = id; }
     public void setName(String name){ this.name = name; }
@@ -39,6 +41,6 @@ public class Structure extends RealmObject {
     public void setDisable_entry(String disable_entry) { this.disable_entry = disable_entry; }
     public void setHintText(String hint_text) { this.hint_text = hint_text; }
     public void setDefault_value(String default_value) { this.default_value = default_value; }
-
+    public void setValue(String value){ this.value = value; }
 
 }

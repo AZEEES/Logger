@@ -90,7 +90,7 @@ public class NodeActivity extends AppCompatActivity {
         if(structures.size()>0){
             ArrayList<Node> nodeList = new ArrayList<Node>();
             for(int i=0; i<structures.size(); i++){
-                Node n1 = new Node(structures.get(i).getId(), structures.get(i).getName());
+                Node n1 = new Node(structures.get(i).getId(), structures.get(i).getName(), structures.get(i).getLevelLeaf());
                 nodeList.add(n1);
             }
             NodeAdapter nodeAdapter = new NodeAdapter(NodeActivity.this, nodeList);

@@ -18,9 +18,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
+public class NodeL0DispAdapter extends ArrayAdapter<NodeL0> {
 
-    public NodeL0Adapter(Context context, ArrayList<NodeL0> nodes)
+    public NodeL0DispAdapter(Context context, ArrayList<NodeL0> nodes)
     {
         super(context,0, nodes);
     }
@@ -31,7 +31,7 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
 
         View listItemView = convertView;
         if(listItemView == null){
-            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.node_l0_item, parent,false);
+            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.node_l0_disp_item, parent,false);
         }
         NodeL0 currentNode = getItem(position);
 
@@ -58,37 +58,19 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
             selectedColor = R.color.colorListItem7;
         }
 
-        TextView nodeId = listItemView.findViewById(R.id.nodeL0_Item_id);
+        TextView nodeId = listItemView.findViewById(R.id.nodeL0disp_Item_id);
         nodeId.setText(currentNode.get_id());
 
-        TextView nodeName = listItemView.findViewById(R.id.nodeL0_Item_name);
+        TextView nodeName = listItemView.findViewById(R.id.nodeL0disp_Item_name);
         nodeName.setText(currentNode.get_name());
 
-        String dtype = currentNode.get_dtype();
-        EditText nodeEditText = listItemView.findViewById(R.id.nodeL0_Item_editText);
-        CheckBox nodeCheckBox = listItemView.findViewById(R.id.nodeL0_Item_checkBox);
-        Spinner nodeSpinner = listItemView.findViewById(R.id.nodeL0_Item_spinner);
-
-        if(dtype.equals("number") || dtype.equals("text")){
-            nodeEditText.setVisibility(View.VISIBLE);
-            if(dtype.equals("number")){
-                nodeEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-            }
-            if(dtype.equals("text")){
-                nodeEditText.setInputType(InputType.TYPE_CLASS_TEXT);
-            }
-        }
-        if(dtype.equals("checkbox")){
-            nodeCheckBox.setVisibility(View.VISIBLE);
-        }
-        if(dtype.equals("dropdown")){
-            nodeSpinner.setVisibility(View.VISIBLE);
-        }
+        TextView nodeValue = listItemView.findViewById(R.id.nodeL0disp_Item_value);
+        nodeValue.setText("Value");
 
         listItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView nodeId = v.findViewById(R.id.nodeL0_Item_id);
+                TextView nodeId = v.findViewById(R.id.nodeL0disp_Item_id);
                 String node_id = nodeId.getText().toString();
             }
         });
@@ -106,7 +88,7 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
 //            }
 //        });
 
-        LinearLayout nodelistParentLayout = listItemView.findViewById(R.id.nodeL0_Item_parentLayout);
+        LinearLayout nodelistParentLayout = listItemView.findViewById(R.id.nodeL0disp_Item_parentLayout);
         setRoundedDrawable(nodelistParentLayout,getContext().getResources().getColor(selectedColor));
 
 

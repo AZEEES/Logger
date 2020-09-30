@@ -6,25 +6,29 @@
     android:layout_margin="12dp">
 
     <LinearLayout
-        android:id="@+id/nodeItem_parentLayout"
+        android:id="@+id/nodeL0disp_Item_parentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_gravity="center"
         android:layout_margin="4dp"
         android:padding="12dp">
         <TextView
-            android:id="@+id/nodeItem_id"
+            android:id="@+id/nodeL0disp_Item_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"/>
         <TextView
-            android:id="@+id/nodeItem_levelleaf"
+            android:id="@+id/nodeL0disp_Item_name"
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"/>
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/white"
+            android:background="@android:color/transparent"/>
         <TextView
-            android:id="@+id/nodeItem_name"
+            android:id="@+id/nodeL0disp_Item_value"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

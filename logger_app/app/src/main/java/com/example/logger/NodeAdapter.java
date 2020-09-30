@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -72,15 +73,17 @@ public class NodeAdapter extends ArrayAdapter<Node> {
                 String node_id = nodeId.getText().toString();
                 TextView nodeLevelLeaf = v.findViewById(R.id.nodeItem_levelleaf);
                 String level_leaf = nodeLevelLeaf.getText().toString();
-                if(level_leaf=="L2") {
+                if(level_leaf.equals("L2")) {
                     Intent nodeActivityIntent = new Intent(getContext(), NodeL2_Activity.class);
                     nodeActivityIntent.putExtra("node_id", node_id);
                     getContext().startActivity(nodeActivityIntent);
+                    Toast.makeText(getContext(), "Invoking L2",Toast.LENGTH_SHORT).show();
                 }
                 else{
                     Intent nodeActivityIntent = new Intent(getContext(), NodeActivity.class);
                     nodeActivityIntent.putExtra("node_id", node_id);
                     getContext().startActivity(nodeActivityIntent);
+                    Toast.makeText(getContext(), "Invoking node",Toast.LENGTH_SHORT).show();
                 }
             }
         });

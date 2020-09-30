@@ -29,6 +29,8 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".NodeL2_Activity"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".NodeL1_Activity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".RealmActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
