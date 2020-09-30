@@ -39,6 +39,19 @@ router.delete('/',(req, res, next)=>{
     } );
 })
 
+//deleting structures
+router.delete('/del',(req, res, next)=>{
+    var id = req.query.id;
+    Structure.remove({id : id}, (err, result)=>{
+        if(err){
+            res.json("Error : " + err);
+        }
+        else{
+            res.json("Succesfully deleted");
+        }
+    } );
+})
+
 //Fetch all entries by regex 
 router.get('/getchilds', (req, res, next)=>{
     var parent = req.query.parent;

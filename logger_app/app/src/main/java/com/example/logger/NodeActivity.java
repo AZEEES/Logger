@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+
 public class NodeActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private String parent_nodeId;
@@ -50,7 +53,9 @@ public class NodeActivity extends AppCompatActivity {
         TextView nodeTextView = findViewById(R.id.node_text);
         nodeTextView.setText("parent_node : " + parent_nodeId);
 
-        fetch_node(server_ip, parent_nodeId);
+        get_node(parent_nodeId);
+
+//        fetch_node(server_ip, parent_nodeId);
 
 //        ArrayList<Node> nodeList = new ArrayList<Node>();
 //        Node n1 = new Node("M0", "Node 0");
@@ -88,6 +93,24 @@ public class NodeActivity extends AppCompatActivity {
         ViewGroup.LayoutParams params = gridView.getLayoutParams();
         params.height = totalHeight;
         gridView.setLayoutParams(params);
+    }
+
+    public void get_node(final String parent_node_id){
+        final Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        final RealmResults<Structure> structures = realm.where(Structure.class).equalTo("parent", parent_node_id).findAll();
+        if(structures.size()>0){
+            ArrayList<Node> nodeList = new ArrayList<Node>();
+            for(int i=0; i<structures.size(); i++){
+                Node n1 = new Node(structures.get(i).getId(), structures.get(i).getName());
+                nodeList.add(n1);
+            }
+            NodeAdapter nodeAdapter = new NodeAdapter(NodeActivity.this, nodeList);
+            GridView nodegridView = (GridView) findViewById(R.id.node_grid);
+            nodegridView.setAdapter(nodeAdapter);
+            setGridViewHeightBasedOnChildren(nodegridView, 3);
+        }
+        realm.close();
     }
 
     public void fetch_node(String server_ip, final String parent_node_id) {

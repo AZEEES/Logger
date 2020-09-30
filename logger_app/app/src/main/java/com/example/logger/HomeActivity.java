@@ -32,6 +32,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
+
 public class HomeActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -71,10 +75,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 homeTextView.setText("Fetching data from server : " + server_ip);
-                Intent nodeIntent = new Intent(HomeActivity.this, NodeActivity.class);
-                nodeIntent.putExtra("node_id", "null");
-                startActivity(nodeIntent);
-//                fetch_data(server_ip, homeTextView);
+//                Intent nodeIntent = new Intent(HomeActivity.this, RealmActivity.class);
+//                nodeIntent.putExtra("node_id", "null");
+//                startActivity(nodeIntent);
+                fetch_data(server_ip, homeTextView);
             }
         });
     }
@@ -85,12 +89,22 @@ public class HomeActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        homeTextView.setText(response.toString());
+//                        homeTextView.setText(response.toString());
                         try {
-//                            JSONObject jsonObject = new JSONObject(response);
+                            final Realm realm = Realm.getDefaultInstance();
+                            realm.beginTransaction();
+                            final RealmResults<Structure> structures = realm.where(Structure.class).findAll();
+                            structures.deleteAllFromRealm();
                             JSONArray jsonArray = new JSONArray(response);
-                            homeTextView.setText(jsonArray.get(0).toString());
-
+                            for(int i=0;i<jsonArray.length(); i++) {
+                                JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
+                                realm.createObjectFromJson(Structure.class, jsonObject.toString());
+                                Intent nodeIntent = new Intent(HomeActivity.this, NodeActivity.class);
+                                nodeIntent.putExtra("node_id", "null");
+                                startActivity(nodeIntent);
+                            }
+                            realm.commitTransaction();
+                            realm.close();
                         } catch (JSONException e) {
                             Toast.makeText(HomeActivity.this, "Error Occured", Toast.LENGTH_SHORT)
                                     .show();
