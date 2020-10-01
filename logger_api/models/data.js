@@ -1,17 +1,22 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const DataSchema = mongoose.Schema({
     id : {
         type : String,
         required : true
     },
-    name : {
+    logger_id : {
         type : String,
         required : true
     },
+    value : {
+        type : String, 
+        required : false
+    },
     entry_time : {
         type : Date,
-        default : Date.now(),
+        default : moment.utc().toDate(Date.now()) ,
         required : true
     }
 });
