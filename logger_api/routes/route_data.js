@@ -25,6 +25,22 @@ router.post('/',(req, res, next)=>{
     })
 })
 
+router.post('/update',(req, res, next)=>{
+    data = req.body;
+    console.log(data);
+
+    // let newData = new Data(req.body);
+    // newData.save((err, data)=>{
+    //     if(err){
+    //         //console.log(err);
+    //         res.json("Error occured in saving : " + err);
+    //     }
+    //     else{
+    //         res.json("Success");
+    //     }
+    // })
+})
+
 //deleting datas
 router.delete('/',(req, res, next)=>{
     var _id = req.param("id");

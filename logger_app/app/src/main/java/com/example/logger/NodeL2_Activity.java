@@ -10,6 +10,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONException;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,10 +41,13 @@ public class NodeL2_Activity extends AppCompatActivity {
         get_nodeL1(parent_nodeId);
         get_nodeL0(parent_nodeId);
 
-        Button nodeL2submit_btnView = findViewById(R.id.nodeL2_submit);
+        final Button nodeL2submit_btnView = findViewById(R.id.nodeL2_submit);
         nodeL2submit_btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                nodeL2submit_btnView.setFocusable(true);
+                nodeL2submit_btnView.setFocusableInTouchMode(true);///add this line
+                nodeL2submit_btnView.requestFocus();
                 Log.v("NODEL2TAG", "Submit " + parent_nodeId);
                 final Realm realm = Realm.getDefaultInstance();
                 realm.beginTransaction();
@@ -66,9 +72,26 @@ public class NodeL2_Activity extends AppCompatActivity {
                     String value = currentStructure.getValue();
                     structureData.add(new StructureData(id, name, value));
                 }
+                realm.close();
                 for(int k=0;k<structureData.size();k++){
                     Log.v("NODEL2TAG", structureData.get(k).getName());
                 }
+
+                JSONArray array=new JSONArray();
+                for(int k=0;k<structureData.size();k++){
+                    JSONObject obj=new JSONObject();
+                    try {
+                        StructureData structureData1 = structureData.get(k);
+                        obj.put("id",structureData1.getId());
+                        obj.put("value",structureData1.getValue());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    array.put(obj);
+                }
+
+                Log.v("NODEL2TAG",array.toString());
+
             }
         });
 
