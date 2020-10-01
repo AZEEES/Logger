@@ -2,7 +2,7 @@ const express = require('express');
 const extend = require('extend');
 const router = express.Router();
 
-const Data = require('../models/data`');
+const Data = require('../models/data');
 
 // getting datas
 router.get('/', (req, res, next)=>{
