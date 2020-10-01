@@ -29,7 +29,7 @@ router.post('/update',(req, res, next)=>{
     data = req.body.array;
     // console.log(data);
     let datanew = JSON.parse(data);
-    console.log(datanew);
+    console.log(datanew[0]);
     // for(i=0;i<this.length(data);i++){
     //     console.log(data[i]);
     // }
