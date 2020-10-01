@@ -22,7 +22,7 @@ app.use(express.urlencoded());
 
 //routes
 app.use('/api/structure', route_structure);
-// app.use('/api/data', route_data);
+app.use('/api/data', route_data);
 
 server_uri = "mongodb+srv://logger_admin:Ntpc@2020@cluster0.t5byo.mongodb.net/<dbname>?retryWrites=true&w=majority"
 const uri = server_uri
