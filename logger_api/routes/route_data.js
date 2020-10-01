@@ -28,21 +28,17 @@ router.post('/',(req, res, next)=>{
 router.post('/update',(req, res, next)=>{
     data = req.body.array;
     let datanew = JSON.parse(data);
-    for(i=0;i<datanew.length; i++){
-        console.log(datanew[i])
-    }
-
-    // let newData = new Data(req.body);
-    // newData.save((err, data)=>{
-    //     if(err){
-    //         //console.log(err);
-    //         res.json("Error occured in saving : " + err);
-    //     }
-    //     else{
-    //         res.json("Success");
-    //     }
-    // })
-})
+    // for(i=0;i<datanew.length; i++){
+    //     let 
+    // }
+     Data.collection.insert(datanew, function (err, docs) {
+        if (err){ 
+            return console.error(err);
+        } else {
+          console.log("Multiple documents inserted to Collection");
+        }
+      });
+    })
 
 //deleting datas
 router.delete('/',(req, res, next)=>{
