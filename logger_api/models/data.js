@@ -1,18 +1,17 @@
 const mongoose = require('mongoose');
 
 const DataSchema = mongoose.Schema({
-    
-    entry_time : {
-        type : Date,
-        default : Date.now(),
-        required : true
-    },
     id : {
         type : String,
         required : true
     },
     name : {
         type : String,
+        required : true
+    },
+    entry_time : {
+        type : Date,
+        default : Date.now(),
         required : true
     }
 });
