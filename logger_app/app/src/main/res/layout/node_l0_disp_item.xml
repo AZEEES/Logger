@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:layout_marginTop="8dp"
+            android:layout_marginRight="4dp"
             android:textColor="@android:color/white"
             android:background="@android:color/transparent"/>
         <TextView

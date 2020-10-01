@@ -1,12 +1,15 @@
 package com.example.logger;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +37,41 @@ public class NodeL2_Activity extends AppCompatActivity {
         nodeTextView.setText("parent_node : " + parent_nodeId);
         get_nodeL1(parent_nodeId);
         get_nodeL0(parent_nodeId);
+
+        Button nodeL2submit_btnView = findViewById(R.id.nodeL2_submit);
+        nodeL2submit_btnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("NODEL2TAG", "Submit " + parent_nodeId);
+                final Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                ArrayList<StructureData> structureData = new ArrayList<>();
+                final RealmResults<Structure> structures = realm.where(Structure.class).equalTo("parent", parent_nodeId).equalTo("level_leaf","L0").findAll();
+                final RealmResults<Structure> structures1 = realm.where(Structure.class).equalTo("parent", parent_nodeId).equalTo("level_leaf","L1").findAll();
+                for (int j=0;j<structures1.size();j++){
+                    String node_id = structures1.get(j).getId();
+                    final RealmResults<Structure> structures2 = realm.where(Structure.class).equalTo("parent", node_id).equalTo("level_leaf","L0").findAll();
+                    for(int l=0; l<structures2.size();l++){
+                        Structure currentStructure = structures2.get(l);
+                        String id = currentStructure.getId();
+                        String name = currentStructure.getName();
+                        String value = currentStructure.getValue();
+                        structureData.add(new StructureData(id, name, value));
+                    }
+                }
+                for(int i=0; i<structures.size();i++){
+                    Structure currentStructure = structures.get(i);
+                    String id = currentStructure.getId();
+                    String name = currentStructure.getName();
+                    String value = currentStructure.getValue();
+                    structureData.add(new StructureData(id, name, value));
+                }
+                for(int k=0;k<structureData.size();k++){
+                    Log.v("NODEL2TAG", structureData.get(k).getName());
+                }
+            }
+        });
+
     }
 
     public void get_nodeL0(final String parent_node_id){
@@ -53,14 +91,18 @@ public class NodeL2_Activity extends AppCompatActivity {
                 String disable_entry = currentStructure.getDisable_entry();
                 String hint_text = currentStructure.getHintText();
                 String default_value = currentStructure.getDefault_value();
-                NodeL0 n1 = new NodeL0(id, name, dtype, slider_entries, lim_low, lim_high, disable_entry, hint_text, default_value);
+                String value = currentStructure.getValue();
+                NodeL0 n1 = new NodeL0(id, name, dtype, slider_entries, lim_low, lim_high, disable_entry, hint_text, default_value, value);
                 nodeList.add(n1);
+//                Toast.makeText(NodeL2_Activity.this, id + "Created", Toast.LENGTH_LONG).show();
+                Log.v("NODETAG", id);
             }
+            realm.close();
             NodeL0Adapter nodeAdapter = new NodeL0Adapter(NodeL2_Activity.this, nodeList);
             ListView nodelistView = (ListView) findViewById(R.id.nodeL2_L0_list);
             nodelistView.setAdapter(nodeAdapter);
+            Utilities.setListViewHeightBasedOnItems(nodelistView);
         }
-        realm.close();
     }
 
     public void get_nodeL1(final String parent_node_id){
@@ -74,14 +116,16 @@ public class NodeL2_Activity extends AppCompatActivity {
                 String id = currentStructure.getId();
                 String name = currentStructure.getName();
                 String level_leaf = currentStructure.getLevelLeaf();
-                NodeL1 n1 = new NodeL1(id, name, level_leaf);
+                String parent_id = currentStructure.getParent();
+                NodeL1 n1 = new NodeL1(id, name, level_leaf, parent_id);
                 nodeList.add(n1);
             }
+            realm.close();
             NodeL1Adapter nodeAdapter = new NodeL1Adapter(NodeL2_Activity.this, nodeList);
             ListView nodelistView = (ListView) findViewById(R.id.nodeL2_L1_list);
             nodelistView.setAdapter(nodeAdapter);
+            Utilities.setListViewHeightBasedOnItems(nodelistView);
         }
-        realm.close();
     }
 
 }

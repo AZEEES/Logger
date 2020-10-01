@@ -1,5 +1,7 @@
 package com.example.logger;
 
+import android.icu.text.TimeZoneFormat;
+
 public class NodeL0 {
     private String mid;
     private String mname;
@@ -10,8 +12,9 @@ public class NodeL0 {
     private String mdisable_entry;
     private String mhint_text;
     private String mdefault_value;
+    private String mvalue;
 
-    public NodeL0(String id, String name, String dtype, String slider_entries, String low_lim, String high_lim, String disable_entry, String hint_text, String default_value){
+    public NodeL0(String id, String name, String dtype, String slider_entries, String low_lim, String high_lim, String disable_entry, String hint_text, String default_value, String value){
         mid = id;
         mname = name;
         mdtype = dtype;
@@ -21,6 +24,7 @@ public class NodeL0 {
         mdisable_entry = disable_entry;
         mhint_text = hint_text;
         mdefault_value = default_value;
+        mvalue = value;
     }
 
     public String get_id(){ return mid; }
@@ -32,5 +36,6 @@ public class NodeL0 {
     public String get_disable_entry() { return mdisable_entry; }
     public String get_hint_text() { return mhint_text; }
     public String get_default_value() { return mdefault_value; }
+    public String get_value() { return mvalue; }
 
 }

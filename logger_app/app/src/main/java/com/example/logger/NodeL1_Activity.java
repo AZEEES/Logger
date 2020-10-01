@@ -1,8 +1,10 @@
 package com.example.logger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -18,6 +20,7 @@ import io.realm.RealmResults;
 
 public class NodeL1_Activity extends AppCompatActivity {
     private String parent_nodeId;
+    private String grandparent_nodeId;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,10 +32,29 @@ public class NodeL1_Activity extends AppCompatActivity {
         else{
             parent_nodeId = "na";
         }
+        if(getIntent().hasExtra("parent_id")){
+            grandparent_nodeId = getIntent().getExtras().getString("parent_id");
+        }
+        else{
+            grandparent_nodeId = "na";
+        }
 
         TextView nodeTextView = findViewById(R.id.nodeL1_text);
         nodeTextView.setText("parent_node : " + parent_nodeId);
         get_nodeL0(parent_nodeId);
+
+        final Button proceedBtnView = findViewById(R.id.nodeL1_proceed);
+        proceedBtnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                proceedBtnView.setFocusable(true);
+                proceedBtnView.setFocusableInTouchMode(true);///add this line
+                proceedBtnView.requestFocus();
+                Intent nodeL2Intent = new Intent(NodeL1_Activity.this, NodeL2_Activity.class);
+                nodeL2Intent.putExtra("node_id", grandparent_nodeId);
+                startActivity(nodeL2Intent);
+            }
+        });
     }
 
     public void get_nodeL0(final String parent_node_id){
@@ -52,14 +74,16 @@ public class NodeL1_Activity extends AppCompatActivity {
                 String disable_entry = currentStructure.getDisable_entry();
                 String hint_text = currentStructure.getHintText();
                 String default_value = currentStructure.getDefault_value();
-                NodeL0 n1 = new NodeL0(id, name, dtype, slider_entries, lim_low, lim_high, disable_entry, hint_text, default_value);
+                String value = currentStructure.getValue();
+                NodeL0 n1 = new NodeL0(id, name, dtype, slider_entries, lim_low, lim_high, disable_entry, hint_text, default_value, value);
                 nodeList.add(n1);
             }
+            realm.close();
             NodeL0Adapter nodeAdapter = new NodeL0Adapter(NodeL1_Activity.this, nodeList);
             ListView nodelistView = (ListView) findViewById(R.id.nodeL1_L0_list);
             nodelistView.setAdapter(nodeAdapter);
+            Utilities.setListViewHeightBasedOnItems(nodelistView);
         }
-        realm.close();
     }
 
 }

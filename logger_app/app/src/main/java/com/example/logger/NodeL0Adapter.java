@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 //import android.support.v
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
 
@@ -33,7 +37,7 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
         if(listItemView == null){
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.node_l0_item, parent,false);
         }
-        NodeL0 currentNode = getItem(position);
+        final NodeL0 currentNode = getItem(position);
 
         int selectedColor = 0;
         if (position % 7 == 0) {
@@ -60,19 +64,20 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
 
         TextView nodeId = listItemView.findViewById(R.id.nodeL0_Item_id);
         nodeId.setText(currentNode.get_id());
+        final String node_id = currentNode.get_id();
 
         TextView nodeName = listItemView.findViewById(R.id.nodeL0_Item_name);
         nodeName.setText(currentNode.get_name());
 
         String dtype = currentNode.get_dtype();
-        EditText nodeEditText = listItemView.findViewById(R.id.nodeL0_Item_editText);
+        final EditText nodeEditText = listItemView.findViewById(R.id.nodeL0_Item_editText);
         CheckBox nodeCheckBox = listItemView.findViewById(R.id.nodeL0_Item_checkBox);
         Spinner nodeSpinner = listItemView.findViewById(R.id.nodeL0_Item_spinner);
 
         if(dtype.equals("number") || dtype.equals("text")){
             nodeEditText.setVisibility(View.VISIBLE);
             if(dtype.equals("number")){
-                nodeEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                nodeEditText.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
             }
             if(dtype.equals("text")){
                 nodeEditText.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -84,6 +89,21 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
         if(dtype.equals("dropdown")){
             nodeSpinner.setVisibility(View.VISIBLE);
         }
+
+        nodeEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    final Realm realm = Realm.getDefaultInstance();
+                    realm.beginTransaction();
+                    Structure structure = realm.where(Structure.class).equalTo("id", node_id).findFirst();
+                    structure.setValue(nodeEditText.getText().toString());
+                    realm.copyToRealmOrUpdate(structure);
+                    realm.commitTransaction();
+                    realm.close();
+                }
+            }
+        });
 
         listItemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,8 +128,6 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
 
         LinearLayout nodelistParentLayout = listItemView.findViewById(R.id.nodeL0_Item_parentLayout);
         setRoundedDrawable(nodelistParentLayout,getContext().getResources().getColor(selectedColor));
-
-
         return listItemView;
     }
 

@@ -92,7 +92,11 @@ public class HomeActivity extends AppCompatActivity {
 //                        homeTextView.setText(response.toString());
                         try {
                             final Realm realm = Realm.getDefaultInstance();
+//                            realm.close();
+//                            Realm.deleteRealm(realm.getConfiguration());
+
                             realm.beginTransaction();
+//                            realm.deleteAll();
                             final RealmResults<Structure> structures = realm.where(Structure.class).findAll();
                             structures.deleteAllFromRealm();
                             JSONArray jsonArray = new JSONArray(response);

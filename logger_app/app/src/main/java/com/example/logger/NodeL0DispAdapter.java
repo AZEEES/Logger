@@ -65,7 +65,11 @@ public class NodeL0DispAdapter extends ArrayAdapter<NodeL0> {
         nodeName.setText(currentNode.get_name());
 
         TextView nodeValue = listItemView.findViewById(R.id.nodeL0disp_Item_value);
-        nodeValue.setText("Value");
+        String node_value = currentNode.get_value();
+        if(!(node_value.equals("na"))) {
+            nodeValue.setText(node_value);
+        }
+
 
         listItemView.setOnClickListener(new View.OnClickListener() {
             @Override

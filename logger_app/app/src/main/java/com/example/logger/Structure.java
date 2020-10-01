@@ -1,10 +1,13 @@
 package com.example.logger;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
 public class Structure extends RealmObject {
 
+    @PrimaryKey
     private String id;
+
     private String name;
     private String parent;
     private String level_leaf;

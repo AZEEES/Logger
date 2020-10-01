@@ -41,7 +41,7 @@ public class NodeL1Adapter extends ArrayAdapter<NodeL1> {
         if(listItemView == null){
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.node_l1_item, parent,false);
         }
-        NodeL1 currentNode = getItem(position);
+        final NodeL1 currentNode = getItem(position);
 
         int selectedColor = 0;
         if (position % 7 == 0) {
@@ -84,25 +84,11 @@ public class NodeL1Adapter extends ArrayAdapter<NodeL1> {
                 TextView nodeId = v.findViewById(R.id.nodeL1_Item_id);
                 String node_id = nodeId.getText().toString();
                 Intent nodeActivityIntent = new Intent(getContext(), NodeL1_Activity.class);
+                nodeActivityIntent.putExtra("parent_id", currentNode.getParentId() );
                 nodeActivityIntent.putExtra("node_id", node_id);
                 getContext().startActivity(nodeActivityIntent);
             }
         });
-
-//        listItemView.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                TextView roomId = (TextView) v.findViewById(R.id.roomItem_roomid);
-//                String room_id = roomId.getText().toString();
-//                Intent roomconfigactivityIntent = new Intent(getContext(),RoomConfigActivity.class);
-//                roomconfigactivityIntent.putExtra("room_id",room_id);
-//                roomconfigactivityIntent.putExtra("profile_id", profile_id);
-//                getContext().startActivity(roomconfigactivityIntent);
-//                return true;
-//            }
-//        });
-
-
         setRoundedDrawable(nodelistParentLayout,getContext().getResources().getColor(selectedColor));
 
 
@@ -126,15 +112,16 @@ public class NodeL1Adapter extends ArrayAdapter<NodeL1> {
                 String disable_entry = currentStructure.getDisable_entry();
                 String hint_text = currentStructure.getHintText();
                 String default_value = currentStructure.getDefault_value();
-                NodeL0 n1 = new NodeL0(id, name, dtype, slider_entries, lim_low, lim_high, disable_entry, hint_text, default_value);
+                String value = currentStructure.getValue();
+                NodeL0 n1 = new NodeL0(id, name, dtype, slider_entries, lim_low, lim_high, disable_entry, hint_text, default_value, value);
                 nodeList.add(n1);
-                Toast.makeText(getContext(), id + " created",Toast.LENGTH_SHORT).show();
             }
+            realm.close();
             NodeL0DispAdapter nodeAdapter = new NodeL0DispAdapter(getContext(), nodeList);
             ListView nodelistView = listItemView.findViewById(R.id.nodel1_list);
             nodelistView.setAdapter(nodeAdapter);
+            Utilities.setListViewHeightBasedOnItems(nodelistView);
         }
-        realm.close();
     }
 
     //Function to create rounded rectangles
