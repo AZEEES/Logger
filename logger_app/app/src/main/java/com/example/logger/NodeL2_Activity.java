@@ -1,5 +1,6 @@
 package com.example.logger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +18,16 @@ import org.json.JSONException;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -91,6 +101,7 @@ public class NodeL2_Activity extends AppCompatActivity {
                 }
 
                 Log.v("NODEL2TAG",array.toString());
+                update_data(array);
 
             }
         });
@@ -149,6 +160,36 @@ public class NodeL2_Activity extends AppCompatActivity {
             nodelistView.setAdapter(nodeAdapter);
             Utilities.setListViewHeightBasedOnItems(nodelistView);
         }
+    }
+
+    public void update_data(final JSONArray array) {
+        final String server_ip = "3.134.88.27:3000";
+        final String url = "http://" + server_ip + "/api/data/update";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.v("NODEL2TAG", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(NodeL2_Activity.this, "Server issue", Toast.LENGTH_SHORT)
+                                .show();
+//                        homeTextView.setText("Server issue on " + url + "\n" + error.toString());
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("array", array.toString());
+                return params;
+            }
+        }
+                ;
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
     }
 
 }

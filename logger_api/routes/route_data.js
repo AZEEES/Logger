@@ -26,7 +26,7 @@ router.post('/',(req, res, next)=>{
 })
 
 router.post('/update',(req, res, next)=>{
-    data = req.body;
+    data = req.body.array;
     console.log(data);
 
     // let newData = new Data(req.body);
