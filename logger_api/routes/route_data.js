@@ -31,7 +31,7 @@ router.post('/update',(req, res, next)=>{
     // for(i=0;i<datanew.length; i++){
     //     let 
     // }
-     Data.collection.insert(datanew, function (err, docs) {
+     Data.collection.bulkWrite(datanew, function (err, docs) {
         if (err){ 
             return console.error(err);
         } else {
