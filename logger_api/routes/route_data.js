@@ -33,9 +33,11 @@ router.post('/update',(req, res, next)=>{
     // }
      Data.collection.insertMany(datanew, function (err, docs) {
         if (err){ 
-            return console.error(err);
+            // return console.error(err);
+            res.json("Error occured");
         } else {
-          console.log("Multiple documents inserted to Collection");
+        //   console.log("Multiple documents inserted to Collection");
+            res.json("Success");
         }
       });
     })
