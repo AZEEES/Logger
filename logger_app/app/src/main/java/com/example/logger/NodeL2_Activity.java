@@ -170,6 +170,12 @@ public class NodeL2_Activity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.v("NODEL2TAG", response);
+                        if(response.equals("\"Success\"")) {
+                            Toast.makeText(NodeL2_Activity.this, "Success", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(NodeL2_Activity.this, "Error", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
