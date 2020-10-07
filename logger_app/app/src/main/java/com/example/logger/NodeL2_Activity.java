@@ -34,6 +34,8 @@ import io.realm.RealmResults;
 
 public class NodeL2_Activity extends AppCompatActivity {
     private String parent_nodeId;
+    private String parent_name;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,16 @@ public class NodeL2_Activity extends AppCompatActivity {
         else{
             parent_nodeId = "na";
         }
+
+        if(getIntent().hasExtra("node_name")){
+            parent_name = getIntent().getExtras().getString("node_name");
+        }
+        else {
+            parent_name = "";
+        }
+
+        TextView nodeL2TextView = findViewById(R.id.nodel2_title);
+        nodeL2TextView.setText(parent_name);
 
         TextView nodeTextView = findViewById(R.id.nodeL2_text);
         nodeTextView.setText("parent_node : " + parent_nodeId);
@@ -137,6 +149,7 @@ public class NodeL2_Activity extends AppCompatActivity {
             nodelistView.setAdapter(nodeAdapter);
             Utilities.setListViewHeightBasedOnItems(nodelistView);
         }
+        realm.close();
     }
 
     public void get_nodeL1(final String parent_node_id){
@@ -160,6 +173,7 @@ public class NodeL2_Activity extends AppCompatActivity {
             nodelistView.setAdapter(nodeAdapter);
             Utilities.setListViewHeightBasedOnItems(nodelistView);
         }
+        realm.close();
     }
 
     public void update_data(final JSONArray array) {

@@ -34,6 +34,7 @@ import io.realm.RealmResults;
 public class NodeActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private String parent_nodeId;
+    private String parent_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,17 @@ public class NodeActivity extends AppCompatActivity {
         else{
             parent_nodeId = "na";
         }
+
+        if(getIntent().hasExtra("node_name")){
+            parent_name = getIntent().getExtras().getString("node_name");
+        }
+        else {
+            parent_name = "";
+        }
 //        String server_ip = "3.134.88.27:3000";
+
+        TextView nodeTitleView = findViewById(R.id.node_title);
+        nodeTitleView.setText(parent_name);
 
         TextView nodeTextView = findViewById(R.id.node_text);
         nodeTextView.setText("parent_node : " + parent_nodeId);

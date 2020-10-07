@@ -73,17 +73,21 @@ public class NodeAdapter extends ArrayAdapter<Node> {
                 String node_id = nodeId.getText().toString();
                 TextView nodeLevelLeaf = v.findViewById(R.id.nodeItem_levelleaf);
                 String level_leaf = nodeLevelLeaf.getText().toString();
+                TextView nodeName = v.findViewById(R.id.nodeItem_name);
+                String node_name = nodeName.getText().toString();
                 if(level_leaf.equals("L2")) {
                     Intent nodeActivityIntent = new Intent(getContext(), NodeL2_Activity.class);
                     nodeActivityIntent.putExtra("node_id", node_id);
+                    nodeActivityIntent.putExtra("node_name", node_name);
                     getContext().startActivity(nodeActivityIntent);
-                    Toast.makeText(getContext(), "Invoking L2",Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), "Invoking L2",Toast.LENGTH_SHORT).show();
                 }
                 else{
                     Intent nodeActivityIntent = new Intent(getContext(), NodeActivity.class);
                     nodeActivityIntent.putExtra("node_id", node_id);
+                    nodeActivityIntent.putExtra("node_name", node_name);
                     getContext().startActivity(nodeActivityIntent);
-                    Toast.makeText(getContext(), "Invoking node",Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), "Invoking node",Toast.LENGTH_SHORT).show();
                 }
             }
         });

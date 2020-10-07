@@ -83,8 +83,11 @@ public class NodeL1Adapter extends ArrayAdapter<NodeL1> {
             public void onClick(View v) {
                 TextView nodeId = v.findViewById(R.id.nodeL1_Item_id);
                 String node_id = nodeId.getText().toString();
+                TextView nodeName = v.findViewById(R.id.nodeL1_Item_name);
+                String node_name = nodeName.getText().toString();
                 Intent nodeActivityIntent = new Intent(getContext(), NodeL1_Activity.class);
                 nodeActivityIntent.putExtra("parent_id", currentNode.getParentId() );
+                nodeActivityIntent.putExtra("node_name", node_name);
                 nodeActivityIntent.putExtra("node_id", node_id);
                 getContext().startActivity(nodeActivityIntent);
             }

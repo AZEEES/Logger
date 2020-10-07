@@ -1,0 +1,22 @@
+.mat-expansion-panel-header { 
+    margin-top: 15px;
+    background: transparent !important;
+}
+
+.mat-expansion-panel-header-overlay{
+    background-color: transparent;
+}
+
+.mat-raised-button{
+    height : 80%;
+    margin-left: 5vw;
+}
+
+.structTitleClass {
+    font-size: 12px;
+    width : 20vw;
+}
+
+.structCompClass {
+    font-size: 12px;
+}

@@ -4,11 +4,19 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
-    <color name="colorListItem1">#FFF44336</color>
-    <color name="colorListItem2">#FF4A148C</color>
-    <color name="colorListItem3">#FF004D40</color>
-    <color name="colorListItem4">#FFD84315</color>
-    <color name="colorListItem5">#FFC2185B</color>
-    <color name="colorListItem6">#FF263238</color>
-    <color name="colorListItem7">#FF827717</color>
+<!--    <color name="colorListItem1">#FFF44336</color>-->
+<!--    <color name="colorListItem2">#FF4A148C</color>-->
+<!--    <color name="colorListItem3">#FF004D40</color>-->
+<!--    <color name="colorListItem4">#FFD84315</color>-->
+<!--    <color name="colorListItem5">#FFC2185B</color>-->
+<!--    <color name="colorListItem6">#FF263238</color>-->
+<!--    <color name="colorListItem7">#FF827717</color>-->
+
+    <color name="colorListItem1">#FFA2A2A2</color>
+    <color name="colorListItem2">#FFA2A2A2</color>
+    <color name="colorListItem3">#FFA2A2A2</color>
+    <color name="colorListItem4">#FFA2A2A2</color>
+    <color name="colorListItem5">#FFA2A2A2</color>
+    <color name="colorListItem6">#FFA2A2A2</color>
+    <color name="colorListItem7">#FFA2A2A2</color>
 </resources>

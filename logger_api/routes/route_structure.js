@@ -25,6 +25,54 @@ router.post('/',(req, res, next)=>{
     })
 })
 
+//updating structures
+router.get('/update',(req, res, next)=>{
+    console.log("Update function called");
+    var id = req.query.id
+    var structure = req.query.structure;
+    var structure = JSON.parse(structure);
+    // console.log(structure);
+    Structure.findByIdAndUpdate(id, structure, (err, result)=>{
+        if(err){
+            res.json("Error : " + err);
+        }
+        else{
+            res.json("success");
+        }
+    })
+    // res.json("success");
+})
+
+//updating structures
+router.get('/add',(req, res, next)=>{
+    var id = req.query.id
+    var structure = req.query.structure;
+    var structure = JSON.parse(structure);  
+    let newStructure = new Structure(structure);
+    newStructure.save((err, structure)=>{
+        if(err){
+            //console.log(err);
+            res.json("Error occured in saving : " + err);
+        }
+        else{
+            res.json("success");
+        }
+    })
+})
+
+router.get('/delete', (req, res, next)=>{
+    var _id = req.query.id;
+    Structure.remove({_id : _id}, (err, result)=>{
+        if(err){
+            res.json("Error : " + err);
+        }
+        else{
+            res.json("success");
+        }
+    } );
+
+})
+
 //deleting structures
 router.delete('/',(req, res, next)=>{
     var _id = req.param("id");

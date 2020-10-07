@@ -22,7 +22,7 @@
             android:id="@+id/nodeItem_levelleaf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/nodeItem_name"
             android:layout_gravity="center"

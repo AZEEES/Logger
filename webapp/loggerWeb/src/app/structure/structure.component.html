@@ -1,0 +1,43 @@
+
+<mat-accordion *ngFor="let child of childs">
+    <mat-expansion-panel showToggle (opened)="openPanel(child.id)" *ngIf="!child.is_hidden">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            <h3 *ngIf="!child.edit_enabled" >{{child.name}}</h3>
+            <div class="structTitleClass" *ngIf="child.edit_enabled" >
+                <form class="example-form">
+                    <mat-form-field class="example-full-width">
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="Ex. Unit 1" [(ngModel)]="child.name" name="Name" value="{{child.name}}" (click)="$event.stopPropagation();" (keydown)="$event.stopPropagation();">
+                    </mat-form-field>
+                </form>
+            </div>
+        </mat-panel-title>
+        <mat-panel-description>
+            <div class="structCompClass">
+                <h4 *ngIf="!child.edit_enabled" >Layer :  {{child.level_leaf}}</h4>
+                <div *ngIf="child.edit_enabled" class="structCompClass">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Level Layer</mat-label>
+                        <mat-select (click)=" $event.stopPropagation();" [(ngModel)]="child.level_leaf" >
+                        <mat-option *ngFor="let level of levels" [value]="level">
+                            {{level}} 
+                        </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <button mat-raised-button color="accent" *ngIf="!child.edit_enabled" (click)="$event.stopPropagation(); editEnable(child)" >Edit</button>
+            <button mat-raised-button color="accent" *ngIf="child.edit_enabled" (click)="$event.stopPropagation(); update(child)" >Update</button>
+            <button mat-raised-button color="warn" (click)="$event.stopPropagation(); delete(child)">Delete</button>
+            <button mat-raised-button color="primary" (click)="$event.stopPropagation(); add(child)">Add Child</button>            
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+    <ng-template matExpansionPanelContent>
+        <app-structure [parent_id]=child.id></app-structure>
+    </ng-template>
+    <!-- <app-structure></app-structure> -->
+    <!-- <p>This is the primary content of the panel.</p> -->
+    </mat-expansion-panel>
+</mat-accordion>
+

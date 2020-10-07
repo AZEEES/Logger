@@ -82,6 +82,11 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
             if(dtype.equals("text")){
                 nodeEditText.setInputType(InputType.TYPE_CLASS_TEXT);
             }
+            String node_value = currentNode.get_value();
+            if(node_value.equals("na")){
+                node_value = "";
+            }
+            nodeEditText.setText(node_value);
         }
         if(dtype.equals("checkbox")){
             nodeCheckBox.setVisibility(View.VISIBLE);
