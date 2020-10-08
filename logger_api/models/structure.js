@@ -45,6 +45,10 @@ const StructureSchema = mongoose.Schema({
         type : String, 
         required : false
     },
+    unit : {
+        type : String,
+        required : false
+    },
     value : {
         type : String,
         required : false

@@ -11,6 +11,7 @@ export interface IStructure {
     hint_text : string,
     default_value : string,
     value : string,
+    unit : string,
     edit_enabled : boolean,
     is_hidden : boolean,
     levels_allowed : Array<string>
