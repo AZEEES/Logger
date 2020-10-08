@@ -20,3 +20,20 @@
 .structCompClass {
     font-size: 12px;
 }
+
+.structComp2Class{
+    font-size: 12px;
+    margin-left: 24px;
+}
+
+.structComp3Class{
+    margin-left: 24px;
+}
+
+.L0Class{
+    display: flex;
+}
+
+.mat-form-field{
+    width: 100px;
+}

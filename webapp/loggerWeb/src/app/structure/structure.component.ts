@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, ComponentRef, ViewContainerRef } from '@angular/core';
 import { StructureService } from '../structure.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -16,7 +16,8 @@ export class StructureComponent implements OnInit {
   public structures = [];
   public childs = [];
   public editEnabled = false;
-  public levels = ["M","L2","L1","L0"];
+  public dtypes = ["number", "text", "checkbox"];
+  public bool = true;
 
   public errorMsg;
   public successMsg;
@@ -27,6 +28,11 @@ export class StructureComponent implements OnInit {
     // this.getStructures();
     console.log("Parent_id : " + this.parent_id);
     this.getChilds();
+  }
+
+  destroyExpansion(){
+    // this.bool = false;
+    console.log("Destroying");
   }
 
   editEnable(child){
@@ -41,11 +47,23 @@ export class StructureComponent implements OnInit {
   }
 
   add(child){
-    delete child._id;
-    child.name="New Entry";
-    child.level_leaf="M";
-    child.parent=child.id;
-    this._structureService.addStructure(JSON.stringify(child))
+    let passed_child = Object.assign({}, child);
+    // let passed_child = child;
+    passed_child.name="New Entry";
+    if(passed_child.level_leaf=='M'){
+      passed_child.level_leaf="M";
+    }
+    else if(passed_child.level_leaf=='L2'){
+      passed_child.level_leaf="L1";
+    }
+    else if(passed_child.level_leaf=='L1'){
+      passed_child.level_leaf="L0";
+    }
+    
+    passed_child.parent=passed_child._id;
+    passed_child.id = "none";
+    delete passed_child._id;
+    this._structureService.addStructure(JSON.stringify(passed_child))
       .subscribe(data => { this.openSnackBar("Adding ", data); child.edit_enabled=false; },
                 error => this.errorMsg = error);
   }
@@ -70,8 +88,22 @@ export class StructureComponent implements OnInit {
   getChilds(){
     console.log("Childs api callled");
     this._structureService.getChilds(this.parent_id)
-      .subscribe(data => this.childs = data,
+      .subscribe(data =>{this.childs = data; this.fillAllowedLevels(this.childs);} ,
                 error => this.errorMsg = error);
+  }
+
+  fillAllowedLevels(childs){
+    for(const child of childs){
+      if(child.level_leaf=='M'){
+        child.levels_allowed = ["M","L2"];
+      }
+      else if(child.level_leaf=='L2'){
+        child.levels_allowed = ["M","L2"];
+      }
+      else if(child.level_leaf=='L1' || child.level_leaf=='L0'){
+        child.levels_allowed = ["L1","L0"]
+      }
+    }
   }
 
   openSnackBar(message: string, action: string) {

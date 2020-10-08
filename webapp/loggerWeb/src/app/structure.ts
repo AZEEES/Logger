@@ -12,5 +12,6 @@ export interface IStructure {
     default_value : string,
     value : string,
     edit_enabled : boolean,
-    is_hidden : boolean
+    is_hidden : boolean,
+    levels_allowed : Array<string>
 }
