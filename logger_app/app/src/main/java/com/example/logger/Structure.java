@@ -6,8 +6,9 @@ import io.realm.annotations.Required;
 public class Structure extends RealmObject {
 
     @PrimaryKey
-    private String id;
+    private String _id;
 
+    private String id;
     private String name;
     private String parent;
     private String level_leaf;
@@ -19,8 +20,9 @@ public class Structure extends RealmObject {
     private String hint_text;
     private String default_value;
     private String value;
+    private String unit;
 
-    public String getId() { return id; }
+    public String getId() { return _id; }
     public String getName(){ return name; }
     public String getParent(){ return parent; }
     public String getLevelLeaf() { return level_leaf; }
@@ -32,8 +34,9 @@ public class Structure extends RealmObject {
     public String getHintText() { return hint_text; }
     public String getDefault_value() { return default_value; }
     public String getValue(){ return value; }
+    public String getUnit(){ return unit; }
 
-    public void setId(String id) { this.id = id; }
+    public void setId(String id) { this._id = id; }
     public void setName(String name){ this.name = name; }
     public void setParent(String parent){ this.parent = parent; }
     public void setLevelLeaf(String level_leaf) { this.level_leaf = level_leaf; }
@@ -45,5 +48,6 @@ public class Structure extends RealmObject {
     public void setHintText(String hint_text) { this.hint_text = hint_text; }
     public void setDefault_value(String default_value) { this.default_value = default_value; }
     public void setValue(String value){ this.value = value; }
+    public void setUnit(String unit){ this.unit = unit; }
 
 }

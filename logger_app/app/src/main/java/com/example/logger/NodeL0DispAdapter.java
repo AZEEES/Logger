@@ -70,6 +70,8 @@ public class NodeL0DispAdapter extends ArrayAdapter<NodeL0> {
             nodeValue.setText(node_value);
         }
 
+        TextView nodeUnitText = listItemView.findViewById(R.id.nodeL0disp_Item_unitText);
+        nodeUnitText.setText(currentNode.get_unit());
 
         listItemView.setOnClickListener(new View.OnClickListener() {
             @Override

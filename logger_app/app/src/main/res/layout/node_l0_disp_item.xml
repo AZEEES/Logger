@@ -38,5 +38,15 @@
             android:textColor="@android:color/white"
             android:background="@android:color/transparent"/>
     </LinearLayout>
+    <TextView
+        android:id="@+id/nodeL0disp_Item_unitText"
+        android:layout_gravity="center"
+        android:layout_marginLeft="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/white"
+        android:background="@android:color/transparent"/>
 
 </LinearLayout>

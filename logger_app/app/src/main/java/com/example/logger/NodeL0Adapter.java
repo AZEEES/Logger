@@ -73,6 +73,7 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
         final EditText nodeEditText = listItemView.findViewById(R.id.nodeL0_Item_editText);
         CheckBox nodeCheckBox = listItemView.findViewById(R.id.nodeL0_Item_checkBox);
         Spinner nodeSpinner = listItemView.findViewById(R.id.nodeL0_Item_spinner);
+        TextView nodeL0UnitTextView = listItemView.findViewById(R.id.nodeL0_Item_unitText);
 
         if(dtype.equals("number") || dtype.equals("text")){
             nodeEditText.setVisibility(View.VISIBLE);
@@ -95,13 +96,16 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
             nodeSpinner.setVisibility(View.VISIBLE);
         }
 
+        nodeL0UnitTextView.setText(currentNode.get_unit());
+
+
         nodeEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
                     final Realm realm = Realm.getDefaultInstance();
                     realm.beginTransaction();
-                    Structure structure = realm.where(Structure.class).equalTo("id", node_id).findFirst();
+                    Structure structure = realm.where(Structure.class).equalTo("_id", node_id).findFirst();
                     structure.setValue(nodeEditText.getText().toString());
                     realm.copyToRealmOrUpdate(structure);
                     realm.commitTransaction();

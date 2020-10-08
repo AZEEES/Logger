@@ -116,7 +116,8 @@ public class NodeL1Adapter extends ArrayAdapter<NodeL1> {
                 String hint_text = currentStructure.getHintText();
                 String default_value = currentStructure.getDefault_value();
                 String value = currentStructure.getValue();
-                NodeL0 n1 = new NodeL0(id, name, dtype, slider_entries, lim_low, lim_high, disable_entry, hint_text, default_value, value);
+                String unit = currentStructure.getUnit();
+                NodeL0 n1 = new NodeL0(id, name, dtype, slider_entries, lim_low, lim_high, disable_entry, hint_text, default_value, value, unit);
                 nodeList.add(n1);
             }
             realm.close();
