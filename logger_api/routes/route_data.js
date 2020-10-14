@@ -83,19 +83,24 @@ router.delete('/delete_all',(req, res, next)=>{
 
 
 //Fetch all entries by regex 
-router.get('/getall', (req, res, next)=>{
-    var name = req.body.name;
-    Data.find({
-        name : {$regex: "^" + name, $options:"i"}
-    }, (err, datas) =>{
-        if(err){
-            res.json("Error")
+router.get('/get_latest_data', (req, res, next)=>{
+    // var id = req.query.id;
+    // console.log(id);
+    Data.aggregate(
+        [
+            {$group: {
+                "_id": "$id",
+                "value" : {$last : "$value"}
+            }}
+        ],(err, result)=>{
+            if(err){
+                res.json("Error : " + err);
+            }
+            else{
+                res.json(result);
+            }
         }
-        else{
-            res.json(datas);
-        }
-    })
-
+    ) ;
 })
 
 
