@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, ComponentRef, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { StructureService } from '../structure.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 

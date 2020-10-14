@@ -1,0 +1,16 @@
+.card{
+    background-color: #2f2f2f;
+    width: 50vw;
+}
+
+.card-content{
+    width: 90%;
+}
+
+.card-header{
+    text-align: center;
+}
+
+h4{
+    color: #d2d2d2;
+}

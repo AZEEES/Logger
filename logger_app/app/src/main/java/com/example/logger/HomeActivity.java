@@ -66,21 +66,23 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        final TextView homeTextView = findViewById(R.id.home_text);
-//        EditText serverIpView = findViewById(R.id.home_server_ip);
-        Button fetchButtonView = findViewById(R.id.home_fetch_btn);
 
-        final String server_ip = "3.134.88.27:3000";
-        fetchButtonView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                homeTextView.setText("Fetching data from server : " + server_ip);
-//                Intent nodeIntent = new Intent(HomeActivity.this, RealmActivity.class);
-//                nodeIntent.putExtra("node_id", "null");
-//                startActivity(nodeIntent);
-                fetch_data(server_ip, homeTextView);
-            }
-        });
+
+//        final TextView homeTextView = findViewById(R.id.home_text);
+////        EditText serverIpView = findViewById(R.id.home_server_ip);
+//        Button fetchButtonView = findViewById(R.id.home_fetch_btn);
+//
+//        final String server_ip = "3.134.88.27:3000";
+//        fetchButtonView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                homeTextView.setText("Fetching data from server : " + server_ip);
+////                Intent nodeIntent = new Intent(HomeActivity.this, RealmActivity.class);
+////                nodeIntent.putExtra("node_id", "null");
+////                startActivity(nodeIntent);
+////                fetch_data(server_ip, homeTextView);
+//            }
+//        });
     }
 
     public void fetch_data(String server_ip, final TextView homeTextView) {
