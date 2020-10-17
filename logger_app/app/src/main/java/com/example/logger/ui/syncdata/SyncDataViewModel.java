@@ -1,16 +1,16 @@
-package com.example.logger.ui.slideshow;
+package com.example.logger.ui.syncdata;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SlideshowViewModel extends ViewModel {
+public class SyncDataViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public SlideshowViewModel() {
+    public SyncDataViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is slideshow fragment");
+        mText.setValue("Syncing Data from server");
     }
 
     public LiveData<String> getText() {

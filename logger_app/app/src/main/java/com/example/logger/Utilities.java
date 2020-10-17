@@ -32,6 +32,7 @@ public class Utilities {
             // Set list height.
             ViewGroup.LayoutParams params = listView.getLayoutParams();
             params.height = totalItemsHeight + totalDividersHeight + totalPadding;
+//            params.height = totalDividersHeight;
             listView.setLayoutParams(params);
             listView.requestLayout();
             //setDynamicHeight(listView);

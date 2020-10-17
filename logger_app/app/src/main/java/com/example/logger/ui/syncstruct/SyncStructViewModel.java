@@ -1,14 +1,14 @@
-package com.example.logger.ui.gallery;
+package com.example.logger.ui.syncstruct;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class GalleryViewModel extends ViewModel {
+public class SyncStructViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public GalleryViewModel() {
+    public SyncStructViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("Server Sync in progress");
     }

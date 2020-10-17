@@ -11,11 +11,92 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/home_fetch_btn"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Fill Data"/>
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="4">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+                <ImageView
+                    android:id="@+id/home_fetch_btn"
+                    android:layout_width="@dimen/tick_size"
+                    android:layout_height="@dimen/tick_size"
+                    android:layout_margin="@dimen/tick_margin"
+                    android:padding="@dimen/tick_padding"
+                    android:src="@drawable/uptick"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/tick_textSize"
+                    android:layout_gravity="center"
+                    android:text="Fill Data"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+                <ImageView
+                    android:id="@+id/home_sync_button"
+                    android:layout_width="@dimen/tick_size"
+                    android:rotation="180"
+                    android:layout_height="@dimen/tick_size"
+                    android:layout_margin="@dimen/tick_margin"
+                    android:padding="@dimen/tick_padding"
+                    android:src="@drawable/downtick"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/tick_textSize"
+                    android:text="Sync Data"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <LinearLayout
+                android:id="@+id/home_progressBarView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:orientation="vertical">
+                <ProgressBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/home_progress_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Test data here"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/text_home"

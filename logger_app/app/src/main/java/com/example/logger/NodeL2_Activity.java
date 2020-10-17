@@ -1,6 +1,7 @@
 package com.example.logger;
 
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -64,6 +65,7 @@ public class NodeL2_Activity extends AppCompatActivity {
         get_nodeL0(parent_nodeId);
 
         final Button nodeL2submit_btnView = findViewById(R.id.nodeL2_submit);
+        setRoundedDrawable(nodeL2submit_btnView, getResources().getColor(R.color.buttonColor));
         nodeL2submit_btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +120,15 @@ public class NodeL2_Activity extends AppCompatActivity {
             }
         });
 
+    }
+
+    //Function to create rounded rectangles
+    public static void setRoundedDrawable(View view, int backgroundColor) {
+        GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.RECTANGLE);
+        shape.setCornerRadius(20f);
+        shape.setColor(backgroundColor);
+        view.setBackgroundDrawable(shape);
     }
 
     public void get_nodeL0(final String parent_node_id){
@@ -178,7 +189,8 @@ public class NodeL2_Activity extends AppCompatActivity {
     }
 
     public void update_data(final JSONArray array) {
-        final String server_ip = "3.134.88.27:3000";
+        final LoggerApplication loggerApp = ((LoggerApplication) getApplicationContext());
+        String server_ip = loggerApp.get_Server_IP();
         final String url = "http://" + server_ip + "/api/data/update";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {

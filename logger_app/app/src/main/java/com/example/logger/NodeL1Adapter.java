@@ -45,6 +45,7 @@ public class NodeL1Adapter extends ArrayAdapter<NodeL1> {
 
         int selectedColor = 0;
         if (position % 7 == 0) {
+//            selectedColor = R.color.colorRed;
             selectedColor = R.color.colorListItem1;
         }
         if (position % 7 == 1) {
@@ -72,7 +73,7 @@ public class NodeL1Adapter extends ArrayAdapter<NodeL1> {
         TextView nodeName = listItemView.findViewById(R.id.nodeL1_Item_name);
         nodeName.setText(currentNode.getNodeName());
 
-        final ListView nodeL0List = listItemView.findViewById(R.id.nodel1_list);
+//        final ListView nodeL0List = listItemView.findViewById(R.id.nodel1_list);
         String node_id = nodeId.getText().toString();
         get_nodeL0(node_id, listItemView);
 

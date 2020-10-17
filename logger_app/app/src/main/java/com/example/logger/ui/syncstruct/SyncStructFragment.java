@@ -1,6 +1,5 @@
-package com.example.logger.ui.gallery;
+package com.example.logger.ui.syncstruct;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.logger.NodeActivity;
+import com.example.logger.LoggerApplication;
 import com.example.logger.R;
 import com.example.logger.Structure;
 
@@ -31,28 +30,29 @@ import org.json.JSONObject;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class GalleryFragment extends Fragment {
+public class SyncStructFragment extends Fragment {
 
-    private GalleryViewModel galleryViewModel;
-    final String server_ip = "3.134.88.27:3000";
+    private SyncStructViewModel syncStructViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        syncStructViewModel =
+                ViewModelProviders.of(this).get(SyncStructViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_syncstruct, container, false);
+        final TextView textView = root.findViewById(R.id.text_syncstruct);
+        syncStructViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
-                fetch_data(server_ip, textView);
+                fetch_data(textView);
             }
         });
         return root;
     }
 
-    public void fetch_data(String server_ip, final TextView textView) {
+    public void fetch_data(final TextView textView) {
+        final LoggerApplication loggerApp = ((LoggerApplication) getActivity().getApplicationContext());
+        String server_ip = loggerApp.get_Server_IP();
         final String url = "http://" + server_ip + "/api/structure";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

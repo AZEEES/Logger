@@ -1,6 +1,7 @@
 package com.example.logger;
 
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,17 @@ public class NodeL1_Activity extends AppCompatActivity {
                 startActivity(nodeL2Intent);
             }
         });
+
+        setRoundedDrawable(proceedBtnView, getResources().getColor(R.color.buttonColor));
+    }
+
+    //Function to create rounded rectangles
+    public static void setRoundedDrawable(View view, int backgroundColor) {
+        GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.RECTANGLE);
+        shape.setCornerRadius(20f);
+        shape.setColor(backgroundColor);
+        view.setBackgroundDrawable(shape);
     }
 
     public void get_nodeL0(final String parent_node_id){

@@ -78,10 +78,11 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
         if(dtype.equals("number") || dtype.equals("text")){
             nodeEditText.setVisibility(View.VISIBLE);
             if(dtype.equals("number")){
-                nodeEditText.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                nodeEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                nodeEditText.setSelection(nodeEditText.getText().length());
             }
             if(dtype.equals("text")){
-                nodeEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+                nodeEditText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
             }
             String node_value = currentNode.get_value();
             if(node_value.equals("na")){
