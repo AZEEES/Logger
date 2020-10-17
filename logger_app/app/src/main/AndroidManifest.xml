@@ -28,8 +28,10 @@
         <activity android:name=".NodeActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".NodeL2_Activity"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".NodeL1_Activity"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".RealmActivity"
             android:theme="@style/AppTheme.NoActionBar"/>

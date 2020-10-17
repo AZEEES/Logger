@@ -29,6 +29,7 @@
             android:textColor="@android:color/white"
             android:background="@android:color/transparent"/>
         <LinearLayout
+            android:id="@+id/nodeL0_Item_editView"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -54,6 +55,7 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/nodeL0_Item_unitView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

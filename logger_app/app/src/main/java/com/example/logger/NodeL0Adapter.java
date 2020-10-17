@@ -6,11 +6,13 @@ import android.graphics.drawable.GradientDrawable;
 //import android.support.v
 import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -75,16 +77,28 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
         Spinner nodeSpinner = listItemView.findViewById(R.id.nodeL0_Item_spinner);
         TextView nodeL0UnitTextView = listItemView.findViewById(R.id.nodeL0_Item_unitText);
 
+        nodeL0UnitTextView.setText(currentNode.get_unit());
+        String node_unit = nodeL0UnitTextView.getText().toString();
+        String node_value = currentNode.get_value();
         if(dtype.equals("number") || dtype.equals("text")){
+            String node_name = nodeName.getText().toString();
+            if(node_name.equals("Defects")){
+                LinearLayout nodeL0UnitView = listItemView.findViewById(R.id.nodeL0_Item_unitView);
+                LinearLayout nodeL0EditView = listItemView.findViewById(R.id.nodeL0_Item_editView);
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) nodeL0EditView.getLayoutParams();
+                params.weight = 2.0f;
+                nodeL0EditView.setLayoutParams(params);
+                nodeL0UnitView.setVisibility(View.GONE);
+                nodeEditText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+            }
+
             nodeEditText.setVisibility(View.VISIBLE);
             if(dtype.equals("number")){
-                nodeEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                nodeEditText.setSelection(nodeEditText.getText().length());
+                nodeEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             }
             if(dtype.equals("text")){
-                nodeEditText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                nodeEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
             }
-            String node_value = currentNode.get_value();
             if(node_value.equals("na")){
                 node_value = "";
             }
@@ -92,12 +106,36 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
         }
         if(dtype.equals("checkbox")){
             nodeCheckBox.setVisibility(View.VISIBLE);
+            if(node_value.equals("OK")){
+                nodeCheckBox.setChecked(true);
+            }
+            else{
+                nodeCheckBox.setChecked(false);
+            }
         }
         if(dtype.equals("dropdown")){
             nodeSpinner.setVisibility(View.VISIBLE);
         }
 
-        nodeL0UnitTextView.setText(currentNode.get_unit());
+        nodeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String checked_val;
+                if(isChecked){
+                    checked_val = "OK";
+                }
+                else{
+                    checked_val = "NOT OK";
+                }
+                final Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                Structure structure = realm.where(Structure.class).equalTo("_id", node_id).findFirst();
+                structure.setValue(checked_val);
+                realm.copyToRealmOrUpdate(structure);
+                realm.commitTransaction();
+                realm.close();
+            }
+        });
 
 
         nodeEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -115,13 +153,13 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
             }
         });
 
-        listItemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView nodeId = v.findViewById(R.id.nodeL0_Item_id);
-                String node_id = nodeId.getText().toString();
-            }
-        });
+//        listItemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                TextView nodeId = v.findViewById(R.id.nodeL0_Item_id);
+//                String node_id = nodeId.getText().toString();
+//            }
+//        });
 
 //        listItemView.setOnLongClickListener(new View.OnLongClickListener() {
 //            @Override
