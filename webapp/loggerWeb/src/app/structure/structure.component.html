@@ -68,6 +68,15 @@
                         </mat-form-field>
                     </form>
                 </div>
+                <h3 class="structComp3Class" *ngIf="!child.edit_enabled && child.dtype=='slider'" >Slider Entries : {{child.slider_entries}}</h3>
+                <div class="structComp2Class" *ngIf="child.edit_enabled && child.dtype=='slider'" >
+                    <form class="example-form">
+                        <mat-form-field class="example-full-width">
+                        <mat-label>Slider Entries</mat-label>
+                        <input matInput placeholder="Ex. A,B,C" [(ngModel)]="child.slider_entries" name="SliderEntries" value="{{child.slider_entries}}" (click)="$event.stopPropagation();" (keydown)="$event.stopPropagation();">
+                        </mat-form-field>
+                    </form>
+                </div>
             </div>
             <button mat-raised-button color="accent" *ngIf="!child.edit_enabled" (click)="$event.stopPropagation(); editEnable(child)" >Edit</button>
             <button mat-raised-button color="accent" *ngIf="child.edit_enabled" (click)="$event.stopPropagation(); update(child)" >Update</button>
