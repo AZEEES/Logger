@@ -115,6 +115,7 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
         }
         if(dtype.equals("dropdown")){
             nodeSpinner.setVisibility(View.VISIBLE);
+            nodeSpinner.set
         }
 
         nodeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
