@@ -17,6 +17,10 @@ const UserSchema = mongoose.Schema({
         type : String,
         required : false
     },
+    root_node_name : {
+        type : String,
+        required : false
+    },
     webapp_access : {
         type : String,
         required : false
