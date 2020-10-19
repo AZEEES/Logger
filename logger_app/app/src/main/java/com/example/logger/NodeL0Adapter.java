@@ -145,7 +145,7 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
         nodeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),"Losrt focus", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(),"Losrt focus", Toast.LENGTH_SHORT).show();
                 final Realm realm = Realm.getDefaultInstance();
                 realm.beginTransaction();
                 Structure structure = realm.where(Structure.class).equalTo("_id", node_id).findFirst();
@@ -192,14 +192,6 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
                 }
             }
         });
-
-//        listItemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                TextView nodeId = v.findViewById(R.id.nodeL0_Item_id);
-//                String node_id = nodeId.getText().toString();
-//            }
-//        });
 
 
         listItemView.setOnLongClickListener(new View.OnLongClickListener() {

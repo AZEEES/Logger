@@ -58,14 +58,9 @@ public class SyncStructFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-//                        homeTextView.setText(response.toString());
                         try {
                             final Realm realm = Realm.getDefaultInstance();
-//                            realm.close();
-//                            Realm.deleteRealm(realm.getConfiguration());
-
                             realm.beginTransaction();
-//                            realm.deleteAll();
                             final RealmResults<Structure> structures = realm.where(Structure.class).findAll();
                             structures.deleteAllFromRealm();
                             JSONArray jsonArray = new JSONArray(response);
@@ -73,9 +68,6 @@ public class SyncStructFragment extends Fragment {
                                 JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
                                 realm.createObjectFromJson(Structure.class, jsonObject.toString());
                                 textView.setText("Sync completed from server");
-//                                Intent nodeIntent = new Intent(getContext(), NodeActivity.class);
-//                                nodeIntent.putExtra("node_id", "null");
-//                                startActivity(nodeIntent);
                             }
                             realm.commitTransaction();
                             realm.close();

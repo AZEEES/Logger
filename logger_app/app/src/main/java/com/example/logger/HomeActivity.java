@@ -2,6 +2,9 @@ package com.example.logger;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.widget.TextView;
+
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -11,6 +14,8 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import io.realm.Realm;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -24,6 +29,17 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        View hView =  navigationView.getHeaderView(0);
+        TextView homeHeaderName = hView.findViewById(R.id.home_header_name);
+        TextView homeHeaderPhone = hView.findViewById(R.id.home_header_phone);
+
+        final Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        User user = realm.where(User.class).equalTo("id", 1).findFirst();
+        homeHeaderName.setText(user.getName());
+        homeHeaderPhone.setText(user.getPhone());
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_syncstruct, R.id.nav_syncdata)
                 .setDrawerLayout(drawer)
@@ -31,6 +47,7 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
     }
 
     @Override

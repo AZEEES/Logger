@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -17,9 +18,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+
+    private String loginStatus = "N";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +34,31 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
-        startActivity(homeIntent);
-
+        final Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        User user = realm.where(User.class).equalTo("id", 1).findFirst();
+        if(user==null){
+            User user1 = new User();
+            user1.setId(1);
+            user1.setName("na");
+            user1.setPhone("na");
+            user1.setRootNode("na");
+            user1.setRootNodeName("na");
+            user1.setLoginStatus("N");
+            realm.copyToRealm(user1);
+            realm.commitTransaction();
+        }
+        else {
+            loginStatus = user.getLoginStatus();
+        }
+        realm.close();
+        if(loginStatus.equals("Y")){
+            Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+            startActivity(homeIntent);
+        }
+        else {
+            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(loginIntent);
+        }
     }
 }

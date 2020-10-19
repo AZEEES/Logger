@@ -33,6 +33,7 @@
                 android:background="@android:color/transparent"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/nodeL0disp_Item_valueView"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -48,6 +49,7 @@
                 android:background="@android:color/transparent"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/nodeL0disp_Item_unitView"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"

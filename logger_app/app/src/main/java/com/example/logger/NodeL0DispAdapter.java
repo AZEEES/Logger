@@ -73,6 +73,17 @@ public class NodeL0DispAdapter extends ArrayAdapter<NodeL0> {
         TextView nodeUnitText = listItemView.findViewById(R.id.nodeL0disp_Item_unitText);
         nodeUnitText.setText(currentNode.get_unit());
 
+        String node_name = nodeName.getText().toString();
+        if(node_name.equals("Defects")){
+            LinearLayout nodeL0UnitView = listItemView.findViewById(R.id.nodeL0disp_Item_unitView);
+            LinearLayout nodeL0EditView = listItemView.findViewById(R.id.nodeL0disp_Item_valueView);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) nodeL0EditView.getLayoutParams();
+            params.weight = 2.0f;
+            nodeL0EditView.setLayoutParams(params);
+            nodeL0UnitView.setVisibility(View.GONE);
+            nodeValue.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+        }
+
         listItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,19 +91,6 @@ public class NodeL0DispAdapter extends ArrayAdapter<NodeL0> {
                 String node_id = nodeId.getText().toString();
             }
         });
-
-//        listItemView.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                TextView roomId = (TextView) v.findViewById(R.id.roomItem_roomid);
-//                String room_id = roomId.getText().toString();
-//                Intent roomconfigactivityIntent = new Intent(getContext(),RoomConfigActivity.class);
-//                roomconfigactivityIntent.putExtra("room_id",room_id);
-//                roomconfigactivityIntent.putExtra("profile_id", profile_id);
-//                getContext().startActivity(roomconfigactivityIntent);
-//                return true;
-//            }
-//        });
 
         LinearLayout nodelistParentLayout = listItemView.findViewById(R.id.nodeL0disp_Item_parentLayout);
         setRoundedDrawable(nodelistParentLayout,getContext().getResources().getColor(selectedColor));

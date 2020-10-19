@@ -92,19 +92,6 @@ public class NodeAdapter extends ArrayAdapter<Node> {
             }
         });
 
-//        listItemView.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                TextView roomId = (TextView) v.findViewById(R.id.roomItem_roomid);
-//                String room_id = roomId.getText().toString();
-//                Intent roomconfigactivityIntent = new Intent(getContext(),RoomConfigActivity.class);
-//                roomconfigactivityIntent.putExtra("room_id",room_id);
-//                roomconfigactivityIntent.putExtra("profile_id", profile_id);
-//                getContext().startActivity(roomconfigactivityIntent);
-//                return true;
-//            }
-//        });
-
         LinearLayout nodelistParentLayout = listItemView.findViewById(R.id.nodeItem_parentLayout);
         setRoundedDrawable(nodelistParentLayout,getContext().getResources().getColor(selectedColor));
 
