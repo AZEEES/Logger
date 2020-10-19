@@ -16,7 +16,7 @@ const DataSchema = mongoose.Schema({
     },
     entry_time : {
         type : Date,
-        default : moment.utc().toDate(new Date.now()) ,
+        default : moment.utc().toDate(Date.now) ,
         required : true
     }
 });
