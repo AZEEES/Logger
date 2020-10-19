@@ -34,8 +34,16 @@
             android:layout_height="wrap_content"/>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"/>
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="24dp">
+            <ProgressBar
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:id="@+id/nodeL2_progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
 
         <Button
             android:id="@+id/nodeL2_submit"

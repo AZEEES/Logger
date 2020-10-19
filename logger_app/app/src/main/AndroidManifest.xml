@@ -35,6 +35,8 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".RealmActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".HistoryActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

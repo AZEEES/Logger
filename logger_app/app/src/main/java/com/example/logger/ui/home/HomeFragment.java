@@ -61,8 +61,8 @@ public class HomeFragment extends Fragment {
                     public void onClick(View v) {
                         final LoggerApplication loggerApp = ((LoggerApplication) getActivity().getApplicationContext());
                         String init_node_id = loggerApp.get_InitNode_Id();
-                        int selectedColor = R.color.colorAccent;
-                        setRoundedDrawable(fillDataButtonView, getContext().getResources().getColor(selectedColor));
+//                        int selectedColor = R.color.colorAccent;
+//                        setRoundedDrawable(fillDataButtonView, getContext().getResources().getColor(selectedColor));
                         Intent nodeIntent = new Intent(getContext(), NodeActivity.class);
                         nodeIntent.putExtra("node_id", init_node_id);
                         startActivity(nodeIntent);
@@ -132,6 +132,8 @@ public class HomeFragment extends Fragment {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(stringRequest);
     }
+
+
 
     //Function to create rounded rectangles
     public static void setRoundedDrawable(View view, int backgroundColor) {

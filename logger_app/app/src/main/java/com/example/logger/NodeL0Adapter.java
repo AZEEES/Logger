@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -74,7 +76,7 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
         String dtype = currentNode.get_dtype();
         final EditText nodeEditText = listItemView.findViewById(R.id.nodeL0_Item_editText);
         CheckBox nodeCheckBox = listItemView.findViewById(R.id.nodeL0_Item_checkBox);
-        Spinner nodeSpinner = listItemView.findViewById(R.id.nodeL0_Item_spinner);
+        final Spinner nodeSpinner = listItemView.findViewById(R.id.nodeL0_Item_spinner);
         TextView nodeL0UnitTextView = listItemView.findViewById(R.id.nodeL0_Item_unitText);
 
         nodeL0UnitTextView.setText(currentNode.get_unit());
@@ -115,7 +117,9 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
         }
         if(dtype.equals("dropdown")){
             nodeSpinner.setVisibility(View.VISIBLE);
-            nodeSpinner.set
+            String[] elements = currentNode.get_slider_entries().toString().split(",");
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, elements );
+            nodeSpinner.setAdapter(spinnerArrayAdapter);
         }
 
         nodeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -135,6 +139,41 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
                 realm.copyToRealmOrUpdate(structure);
                 realm.commitTransaction();
                 realm.close();
+            }
+        });
+
+        nodeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getContext(),"Losrt focus", Toast.LENGTH_SHORT).show();
+                final Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                Structure structure = realm.where(Structure.class).equalTo("_id", node_id).findFirst();
+                structure.setValue(nodeSpinner.getSelectedItem().toString());
+                realm.copyToRealmOrUpdate(structure);
+                realm.commitTransaction();
+                realm.close();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        nodeSpinner.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+//                    Toast.makeText(getContext(),"Losrt focus", Toast.LENGTH_SHORT).show();
+                    final Realm realm = Realm.getDefaultInstance();
+                    realm.beginTransaction();
+                    Structure structure = realm.where(Structure.class).equalTo("_id", node_id).findFirst();
+                    structure.setValue(nodeSpinner.getSelectedItem().toString());
+                    realm.copyToRealmOrUpdate(structure);
+                    realm.commitTransaction();
+                    realm.close();
+                }
             }
         });
 
@@ -162,18 +201,21 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
 //            }
 //        });
 
-//        listItemView.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                TextView roomId = (TextView) v.findViewById(R.id.roomItem_roomid);
-//                String room_id = roomId.getText().toString();
-//                Intent roomconfigactivityIntent = new Intent(getContext(),RoomConfigActivity.class);
-//                roomconfigactivityIntent.putExtra("room_id",room_id);
-//                roomconfigactivityIntent.putExtra("profile_id", profile_id);
-//                getContext().startActivity(roomconfigactivityIntent);
-//                return true;
-//            }
-//        });
+
+        listItemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                TextView nodeId = v.findViewById(R.id.nodeL0_Item_id);
+                TextView nodeName = v.findViewById(R.id.nodeL0_Item_name);
+                String node_id = nodeId.getText().toString();
+                String node_name = nodeName.getText().toString();
+                Intent historyIntent = new Intent(getContext(), HistoryActivity.class);
+                historyIntent.putExtra("node_id", node_id);
+                historyIntent.putExtra("node_name", node_name);
+                getContext().startActivity(historyIntent);
+                return true;
+            }
+        });
 
         LinearLayout nodelistParentLayout = listItemView.findViewById(R.id.nodeL0_Item_parentLayout);
         setRoundedDrawable(nodelistParentLayout,getContext().getResources().getColor(selectedColor));

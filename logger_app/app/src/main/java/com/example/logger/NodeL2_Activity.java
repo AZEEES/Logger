@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONArray;
@@ -65,10 +66,13 @@ public class NodeL2_Activity extends AppCompatActivity {
         get_nodeL0(parent_nodeId);
 
         final Button nodeL2submit_btnView = findViewById(R.id.nodeL2_submit);
+        final ProgressBar nodeL2progressBar = findViewById(R.id.nodeL2_progressBar);
         setRoundedDrawable(nodeL2submit_btnView, getResources().getColor(R.color.buttonColor));
         nodeL2submit_btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                nodeL2submit_btnView.setEnabled(false);
+                nodeL2progressBar.setVisibility(View.VISIBLE);
                 nodeL2submit_btnView.setFocusable(true);
                 nodeL2submit_btnView.setFocusableInTouchMode(true);///add this line
                 nodeL2submit_btnView.requestFocus();
@@ -115,7 +119,7 @@ public class NodeL2_Activity extends AppCompatActivity {
                 }
 
                 Log.v("NODEL2TAG",array.toString());
-                update_data(array);
+                update_data(array, nodeL2submit_btnView, nodeL2progressBar);
 
             }
         });
@@ -188,7 +192,7 @@ public class NodeL2_Activity extends AppCompatActivity {
         realm.close();
     }
 
-    public void update_data(final JSONArray array) {
+    public void update_data(final JSONArray array, final Button nodeL2SubmitButtonView, final ProgressBar nodeL2ProgressBar) {
         final LoggerApplication loggerApp = ((LoggerApplication) getApplicationContext());
         String server_ip = loggerApp.get_Server_IP();
         final String url = "http://" + server_ip + "/api/data/update";
@@ -199,9 +203,13 @@ public class NodeL2_Activity extends AppCompatActivity {
                         Log.v("NODEL2TAG", response);
                         if(response.equals("\"Success\"")) {
                             Toast.makeText(NodeL2_Activity.this, "Success", Toast.LENGTH_SHORT).show();
+                            nodeL2SubmitButtonView.setEnabled(true);
+                            nodeL2ProgressBar.setVisibility(View.GONE);
                         }
                         else{
                             Toast.makeText(NodeL2_Activity.this, "Error", Toast.LENGTH_SHORT).show();
+                            nodeL2SubmitButtonView.setEnabled(true);
+                            nodeL2ProgressBar.setVisibility(View.GONE);
                         }
                     }
                 },
@@ -210,6 +218,8 @@ public class NodeL2_Activity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(NodeL2_Activity.this, "Server issue", Toast.LENGTH_SHORT)
                                 .show();
+                        nodeL2SubmitButtonView.setEnabled(true);
+                        nodeL2ProgressBar.setVisibility(View.GONE);
 //                        homeTextView.setText("Server issue on " + url + "\n" + error.toString());
                     }
                 }){
