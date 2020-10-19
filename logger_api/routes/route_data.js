@@ -25,6 +25,11 @@ router.post('/history', (req, res, next)=>{
             }
         }
     ,(err, datas)=>{
+        for(i=0;i<datas.length;i++){
+            data = datas[i];
+            data.entry_time = data._id.getTimestamp();
+            // console.log(data._id.getTimestamp())
+        }
         res.json(datas);
     })
 });
