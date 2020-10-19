@@ -13,7 +13,7 @@ router.get('/', (req, res, next)=>{
 
 // getting datas
 router.get('/history', (req, res, next)=>{
-    var id = req.query.id;
+    var id = req.body.id;
     Data.find({id : id},(err, datas)=>{
         res.json(datas);
     })
