@@ -19,7 +19,7 @@ router.post('/history', (req, res, next)=>{
         ['_id','value','entry_time'], // Columns to Return
         {
             skip:0, // Starting Row
-            limit:100, // Ending Row
+            limit: 100, // Ending Row
             sort:{
                 entry_time: -1 //Sort by Date Added DESC
             }
