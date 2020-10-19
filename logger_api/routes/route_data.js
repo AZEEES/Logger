@@ -15,7 +15,11 @@ router.get('/', (req, res, next)=>{
 router.post('/history', (req, res, next)=>{
     var id = req.body.id;
     console.log(id)
-    Data.find({id : id},(err, datas)=>{
+    Data.find({id : id},{
+        sort:{
+            date_added: -1 //Sort by Date Added DESC
+        }
+    },(err, datas)=>{
         res.json(datas);
     })
 });
