@@ -14,14 +14,14 @@ router.get('/', (req, res, next)=>{
 // getting datas
 router.post('/history', (req, res, next)=>{
     var id = req.body.id;
-    console.log(id)
+    // console.log(id)
     Data.find({id : id},
         ['_id','value','entry_time'], // Columns to Return
         {
             skip:0, // Starting Row
             limit: 100, // Ending Row
             sort:{
-                entry_time: -1 //Sort by Date Added DESC
+                _id: -1 //Sort by Date Added DESC
             }
         }
     ,(err, datas)=>{
