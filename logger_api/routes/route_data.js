@@ -17,7 +17,7 @@ router.post('/history', (req, res, next)=>{
     console.log(id)
     Data.find({id : id},{
         sort:{
-            date_added: -1 //Sort by Date Added DESC
+            entry_time: -1 //Sort by Date Added DESC
         }
     },(err, datas)=>{
         res.json(datas);
