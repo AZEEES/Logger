@@ -39,6 +39,7 @@ public class HomeActivity extends AppCompatActivity {
         User user = realm.where(User.class).equalTo("id", 1).findFirst();
         homeHeaderName.setText(user.getName());
         homeHeaderPhone.setText(user.getPhone());
+        realm.close();
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_syncstruct, R.id.nav_syncdata)

@@ -38,4 +38,18 @@ router.post('/check_valid',(req, res, next)=>{
     })
 });
 
+//deleting users
+router.delete('/',(req, res, next)=>{
+    var _id = req.param("id");
+    //console.log(_id);
+    User.remove({_id : _id}, (err, result)=>{
+        if(err){
+            res.json("Error : " + err);
+        }
+        else{
+            res.json("Succesfully deleted");
+        }
+    } );
+})
+
 module.exports = router;
