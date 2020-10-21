@@ -100,6 +100,8 @@ public class NodeL2_Activity extends AppCompatActivity {
                     String value = currentStructure.getValue();
                     structureData.add(new StructureData(id, name, value));
                 }
+                User user = realm.where(User.class).equalTo("id", 1).findFirst();
+                String logger_id = user.getPhone();
                 realm.close();
                 for(int k=0;k<structureData.size();k++){
                     Log.v("NODEL2TAG", structureData.get(k).getName());
@@ -112,6 +114,7 @@ public class NodeL2_Activity extends AppCompatActivity {
                         StructureData structureData1 = structureData.get(k);
                         obj.put("id",structureData1.getId());
                         obj.put("value",structureData1.getValue());
+                        obj.put("logger_id", logger_id);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

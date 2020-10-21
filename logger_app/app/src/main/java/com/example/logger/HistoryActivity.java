@@ -77,6 +77,7 @@ public class HistoryActivity extends AppCompatActivity {
                                 String id = jsonObject.getString("_id");
                                 String value = jsonObject.getString("value");
                                 String datetime = jsonObject.getString("entry_time");
+                                String logger_id = jsonObject.getString("logger_id");
                                 try {
                                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
                                     dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -88,7 +89,7 @@ public class HistoryActivity extends AppCompatActivity {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                History history = new History(id, value, datetime);
+                                History history = new History(id, value, datetime, logger_id);
                                 histories.add(history);
                             }
                             HistoryItemAdapter historyAdapter = new HistoryItemAdapter(HistoryActivity.this, histories);
@@ -96,7 +97,7 @@ public class HistoryActivity extends AppCompatActivity {
                             historyListView.setAdapter(historyAdapter);
 //
                         } catch (JSONException e) {
-                            Toast.makeText(HistoryActivity.this, "Error Occured", Toast.LENGTH_SHORT)
+                            Toast.makeText(HistoryActivity.this, "Error Occured : " + e.toString(), Toast.LENGTH_SHORT)
                                     .show();
                         }
                     }
