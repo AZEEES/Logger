@@ -102,6 +102,7 @@ public class NodeL2_Activity extends AppCompatActivity {
                 }
                 User user = realm.where(User.class).equalTo("id", 1).findFirst();
                 String logger_id = user.getPhone();
+                String logger_name = user.getName();
                 realm.close();
                 for(int k=0;k<structureData.size();k++){
                     Log.v("NODEL2TAG", structureData.get(k).getName());
@@ -115,6 +116,7 @@ public class NodeL2_Activity extends AppCompatActivity {
                         obj.put("id",structureData1.getId());
                         obj.put("value",structureData1.getValue());
                         obj.put("logger_id", logger_id);
+                        obj.put("logger_name", logger_name);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

@@ -10,6 +10,10 @@ const DataSchema = mongoose.Schema({
         type : String,
         required : true
     },
+    logger_name :{
+        type : String,
+        required : false
+    }
     value : {
         type : String, 
         required : false

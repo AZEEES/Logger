@@ -78,6 +78,7 @@ public class HistoryActivity extends AppCompatActivity {
                                 String value = jsonObject.getString("value");
                                 String datetime = jsonObject.getString("entry_time");
                                 String logger_id = jsonObject.getString("logger_id");
+                                String logger_name = jsonObject.getString("logger_name");
                                 try {
                                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
                                     dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -89,7 +90,7 @@ public class HistoryActivity extends AppCompatActivity {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                History history = new History(id, value, datetime, logger_id);
+                                History history = new History(id, value, datetime, logger_id, logger_name);
                                 histories.add(history);
                             }
                             HistoryItemAdapter historyAdapter = new HistoryItemAdapter(HistoryActivity.this, histories);

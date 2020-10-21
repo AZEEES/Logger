@@ -64,9 +64,10 @@ public class HistoryItemAdapter extends ArrayAdapter<History> {
         historyValue.setText(currentHistory.getValue());
 
         String logger_id = currentHistory.getLoggerId();
+        String logger_name = currentHistory.getLoggerName();
 
         TextView historyDatetime = listItemView.findViewById(R.id.historyListItem_datetime);
-        historyDatetime.setText("Updated by" + logger_id +  "at " + currentHistory.getDatetime());
+        historyDatetime.setText("Updated at " + currentHistory.getDatetime() + "\nBy " + logger_name + " (" + logger_id + ")" );
 
         LinearLayout nodelistParentLayout = listItemView.findViewById(R.id.historyItem_parentLayout);
         setRoundedDrawable(nodelistParentLayout,getContext().getResources().getColor(selectedColor));

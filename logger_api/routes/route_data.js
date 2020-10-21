@@ -16,7 +16,7 @@ router.post('/history', (req, res, next)=>{
     var id = req.body.id;
     // console.log(id)
     Data.find({id : id},
-        ['_id','value','entry_time','logger_id'], // Columns to Return
+        ['_id','value','entry_time','logger_id','logger_name'], // Columns to Return
         {
             skip:0, // Starting Row
             limit: 100, // Ending Row
