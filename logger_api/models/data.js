@@ -8,12 +8,12 @@ const DataSchema = mongoose.Schema({
     },
     logger_id : {
         type : String,
-        required : true
+        required : false
     },
-    logger_name :{
+    logger_name : {
         type : String,
         required : false
-    }
+    },
     value : {
         type : String, 
         required : false
