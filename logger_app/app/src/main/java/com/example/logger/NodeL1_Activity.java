@@ -103,7 +103,7 @@ public class NodeL1_Activity extends AppCompatActivity {
                 nodeList.add(n1);
             }
             realm.close();
-            NodeL0Adapter nodeAdapter = new NodeL0Adapter(NodeL1_Activity.this, nodeList);
+            NodeL0Adapter nodeAdapter = new NodeL0Adapter(NodeL1_Activity.this, nodeList, "0");
             ListView nodelistView = (ListView) findViewById(R.id.nodeL1_L0_list);
             nodelistView.setAdapter(nodeAdapter);
             Utilities.setListViewHeightBasedOnItems(nodelistView);

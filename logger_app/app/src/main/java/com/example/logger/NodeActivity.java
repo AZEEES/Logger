@@ -35,6 +35,7 @@ public class NodeActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private String parent_nodeId;
     private String parent_name;
+    private String view_only;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,13 @@ public class NodeActivity extends AppCompatActivity {
         else {
             parent_name = "";
         }
+
+        if(getIntent().hasExtra("view_only")){
+            view_only = getIntent().getExtras().getString("view_only");
+        }
+        else{
+            view_only = "N";
+        }
 //        String server_ip = "3.134.88.27:3000";
 
         TextView nodeTitleView = findViewById(R.id.node_title);
@@ -64,7 +72,7 @@ public class NodeActivity extends AppCompatActivity {
         TextView nodeTextView = findViewById(R.id.node_text);
         nodeTextView.setText("parent_node : " + parent_nodeId);
 
-        get_node(parent_nodeId);
+        get_node(parent_nodeId, view_only);
     }
 
     public void setGridViewHeightBasedOnChildren(GridView gridView, int columns) {
@@ -94,7 +102,7 @@ public class NodeActivity extends AppCompatActivity {
         gridView.setLayoutParams(params);
     }
 
-    public void get_node(final String parent_node_id){
+    public void get_node(final String parent_node_id, final String view_only){
         final Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         final RealmResults<Structure> structures = realm.where(Structure.class).equalTo("parent", parent_node_id).findAll();
@@ -104,51 +112,11 @@ public class NodeActivity extends AppCompatActivity {
                 Node n1 = new Node(structures.get(i).getId(), structures.get(i).getName(), structures.get(i).getLevelLeaf());
                 nodeList.add(n1);
             }
-            NodeAdapter nodeAdapter = new NodeAdapter(NodeActivity.this, nodeList);
+            NodeAdapter nodeAdapter = new NodeAdapter(NodeActivity.this, nodeList, view_only);
             GridView nodegridView = (GridView) findViewById(R.id.node_grid);
             nodegridView.setAdapter(nodeAdapter);
             setGridViewHeightBasedOnChildren(nodegridView, 3);
         }
         realm.close();
     }
-
-//    public void fetch_node(String server_ip, final String parent_node_id) {
-//        final String url = "http://" + server_ip + "/api/structure/getchilds?parent=" + parent_node_id;
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-////                        TextView nodeTextView = findViewById(R.id.node_text);
-////                        nodeTextView.setText(response);
-//                        try {
-////                            JSONObject jsonObject = new JSONObject(response);
-//                            JSONArray jsonArray = new JSONArray(response);
-//                            ArrayList<Node> nodeList = new ArrayList<Node>();
-//                            for(int i=0; i<jsonArray.length();i++){
-//                                JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
-//                                Node n1 = new Node(jsonObject.getString("id"), jsonObject.getString("name"));
-//                                nodeList.add(n1);
-//                            }
-//                            NodeAdapter nodeAdapter = new NodeAdapter(NodeActivity.this, nodeList);
-//                            GridView nodegridView = (GridView) findViewById(R.id.node_grid);
-//                            nodegridView.setAdapter(nodeAdapter);
-//                            setGridViewHeightBasedOnChildren(nodegridView, 3);
-//
-//                        } catch (JSONException e) {
-//                            Toast.makeText(NodeActivity.this, "JSON Error Occured", Toast.LENGTH_SHORT)
-//                                    .show();
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(NodeActivity.this, "Server issue", Toast.LENGTH_SHORT)
-//                                .show();
-////                        homeTextView.setText("Server issue on " + url + "\n" + error.toString());
-//                    }
-//                });
-//        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-//        requestQueue.add(stringRequest);
-//    }
 }

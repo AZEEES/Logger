@@ -56,11 +56,11 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(@Nullable String s) {
 //                textView.setText(s);
+                final LoggerApplication loggerApp = ((LoggerApplication) getActivity().getApplicationContext());
+                final String init_node_id = loggerApp.get_InitNode_Id();
                 fillDataButtonView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        final LoggerApplication loggerApp = ((LoggerApplication) getActivity().getApplicationContext());
-                        String init_node_id = loggerApp.get_InitNode_Id();
 //                        int selectedColor = R.color.colorAccent;
 //                        setRoundedDrawable(fillDataButtonView, getContext().getResources().getColor(selectedColor));
                         Intent nodeIntent = new Intent(getContext(), NodeActivity.class);
@@ -74,7 +74,7 @@ public class HomeFragment extends Fragment {
                     public void onClick(View v) {
                         homeProgressView.setVisibility(View.VISIBLE);
                         homeProgressTextView.setText("Getting data from server");
-                        fetch_data(homeProgressView, homeProgressTextView);
+                        fetch_data(homeProgressView, homeProgressTextView, init_node_id);
                     }
                 });
 
@@ -86,7 +86,7 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    public void fetch_data(final LinearLayout homeProgressView, final TextView homeProgressTextView) {
+    public void fetch_data(final LinearLayout homeProgressView, final TextView homeProgressTextView, final String init_node_id) {
         final LoggerApplication loggerApp = ((LoggerApplication) getActivity().getApplicationContext());
         String server_ip = loggerApp.get_Server_IP();
         final String url = "http://" + server_ip + "/api/data/get_latest_data";
@@ -104,10 +104,12 @@ public class HomeFragment extends Fragment {
                                 JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
                                 String id = jsonObject.getString("_id");
                                 String value = jsonObject.getString("value");
+                                String logger_name = jsonObject.getString("logger_name");
                                 resp += id + " : " + value + "\n";
                                 Structure str_edit = realm.where(Structure.class).equalTo("_id", id).findFirst();
                                 if(str_edit!=null){
                                     str_edit.setValue(value);
+                                    str_edit.setLoggerName(logger_name);
                                 }
                             }
 //                            textView.setText(resp);
@@ -115,8 +117,12 @@ public class HomeFragment extends Fragment {
                             Toast.makeText(getContext(), "Data received from server",Toast.LENGTH_SHORT).show();
                             realm.commitTransaction();
                             realm.close();
+                            Intent nodeIntent = new Intent(getContext(), NodeActivity.class);
+                            nodeIntent.putExtra("node_id", init_node_id);
+                            nodeIntent.putExtra("view_only", "1");
+                            startActivity(nodeIntent);
                         } catch (JSONException e) {
-                            Toast.makeText(getContext(), "Error Occured", Toast.LENGTH_SHORT)
+                            Toast.makeText(getContext(), "Error Occured" + e.toString(), Toast.LENGTH_SHORT)
                                     .show();
                         }
                     }

@@ -113,7 +113,10 @@ router.get('/get_latest_data', (req, res, next)=>{
         [
             {$group: {
                 "_id": "$id",
-                "value" : {$last : "$value"}
+                "value" : {$last : "$value"},
+                "logger_id" : {$last : "$logger_id"},
+                "logger_id" : {$last : "$logger_name"},
+                "entry_time" : {$last : "$entry_time"}
             }}
         ],(err, result)=>{
             if(err){

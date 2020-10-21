@@ -28,9 +28,11 @@ import io.realm.RealmResults;
 
 public class NodeL1Adapter extends ArrayAdapter<NodeL1> {
 
-    public NodeL1Adapter(Context context, ArrayList<NodeL1> nodes)
+    private String view_only;
+    public NodeL1Adapter(Context context, ArrayList<NodeL1> nodes, String view_only)
     {
         super(context,0, nodes);
+        this.view_only = view_only;
     }
 
     //    @NonNull
@@ -79,20 +81,24 @@ public class NodeL1Adapter extends ArrayAdapter<NodeL1> {
 
         final LinearLayout nodelistParentLayout = listItemView.findViewById(R.id.nodeL1_Item_parentLayout);
 
-        listItemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView nodeId = v.findViewById(R.id.nodeL1_Item_id);
-                String node_id = nodeId.getText().toString();
-                TextView nodeName = v.findViewById(R.id.nodeL1_Item_name);
-                String node_name = nodeName.getText().toString();
-                Intent nodeActivityIntent = new Intent(getContext(), NodeL1_Activity.class);
-                nodeActivityIntent.putExtra("parent_id", currentNode.getParentId() );
-                nodeActivityIntent.putExtra("node_name", node_name);
-                nodeActivityIntent.putExtra("node_id", node_id);
-                getContext().startActivity(nodeActivityIntent);
-            }
-        });
+
+        if(view_only.equals("1"));
+        else {
+            listItemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TextView nodeId = v.findViewById(R.id.nodeL1_Item_id);
+                    String node_id = nodeId.getText().toString();
+                    TextView nodeName = v.findViewById(R.id.nodeL1_Item_name);
+                    String node_name = nodeName.getText().toString();
+                    Intent nodeActivityIntent = new Intent(getContext(), NodeL1_Activity.class);
+                    nodeActivityIntent.putExtra("parent_id", currentNode.getParentId());
+                    nodeActivityIntent.putExtra("node_name", node_name);
+                    nodeActivityIntent.putExtra("node_id", node_id);
+                    getContext().startActivity(nodeActivityIntent);
+                   }
+            });
+        }
         setRoundedDrawable(nodelistParentLayout,getContext().getResources().getColor(selectedColor));
 
 

@@ -28,9 +28,11 @@ import io.realm.RealmResults;
 
 public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
 
-    public NodeL0Adapter(Context context, ArrayList<NodeL0> nodes)
+    private String view_only;
+    public NodeL0Adapter(Context context, ArrayList<NodeL0> nodes, String view_only)
     {
         super(context,0, nodes);
+        this.view_only = view_only;
     }
 
     //    @NonNull
@@ -78,6 +80,10 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
         CheckBox nodeCheckBox = listItemView.findViewById(R.id.nodeL0_Item_checkBox);
         final Spinner nodeSpinner = listItemView.findViewById(R.id.nodeL0_Item_spinner);
         TextView nodeL0UnitTextView = listItemView.findViewById(R.id.nodeL0_Item_unitText);
+
+        if(view_only.equals("1")){
+            nodeEditText.setFocusable(false);
+        }
 
         nodeL0UnitTextView.setText(currentNode.get_unit());
         String node_unit = nodeL0UnitTextView.getText().toString();

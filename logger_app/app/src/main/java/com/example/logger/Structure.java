@@ -20,6 +20,8 @@ public class Structure extends RealmObject {
     private String hint_text;
     private String default_value;
     private String value;
+    private String logger_name;
+
     private String unit;
 
     public String getId() { return _id; }
@@ -35,6 +37,7 @@ public class Structure extends RealmObject {
     public String getDefault_value() { return default_value; }
     public String getValue(){ return value; }
     public String getUnit(){ return unit; }
+    public String getLoggerName() { return logger_name; }
 
     public void setId(String id) { this._id = id; }
     public void setName(String name){ this.name = name; }
@@ -49,5 +52,6 @@ public class Structure extends RealmObject {
     public void setDefault_value(String default_value) { this.default_value = default_value; }
     public void setValue(String value){ this.value = value; }
     public void setUnit(String unit){ this.unit = unit; }
+    public void setLoggerName(String logger_name){ this.logger_name = logger_name; }
 
 }

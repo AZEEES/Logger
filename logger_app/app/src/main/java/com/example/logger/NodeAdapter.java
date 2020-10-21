@@ -17,10 +17,11 @@ import java.util.ArrayList;
 
 public class NodeAdapter extends ArrayAdapter<Node> {
 
-    public NodeAdapter(Context context, ArrayList<Node> nodes)
+    private String view_only;
+    public NodeAdapter(Context context, ArrayList<Node> nodes, String view_only)
     {
-//        super(context, nodes);
         super(context,0, nodes);
+        this.view_only = view_only;
     }
 
 
@@ -79,6 +80,7 @@ public class NodeAdapter extends ArrayAdapter<Node> {
                     Intent nodeActivityIntent = new Intent(getContext(), NodeL2_Activity.class);
                     nodeActivityIntent.putExtra("node_id", node_id);
                     nodeActivityIntent.putExtra("node_name", node_name);
+                    nodeActivityIntent.putExtra("view_only", view_only);
                     getContext().startActivity(nodeActivityIntent);
 //                    Toast.makeText(getContext(), "Invoking L2",Toast.LENGTH_SHORT).show();
                 }
@@ -86,6 +88,7 @@ public class NodeAdapter extends ArrayAdapter<Node> {
                     Intent nodeActivityIntent = new Intent(getContext(), NodeActivity.class);
                     nodeActivityIntent.putExtra("node_id", node_id);
                     nodeActivityIntent.putExtra("node_name", node_name);
+                    nodeActivityIntent.putExtra("view_only", view_only);
                     getContext().startActivity(nodeActivityIntent);
 //                    Toast.makeText(getContext(), "Invoking node",Toast.LENGTH_SHORT).show();
                 }

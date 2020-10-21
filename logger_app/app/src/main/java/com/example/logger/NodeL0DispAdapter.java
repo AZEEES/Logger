@@ -92,6 +92,21 @@ public class NodeL0DispAdapter extends ArrayAdapter<NodeL0> {
             }
         });
 
+        listItemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                TextView nodeId = v.findViewById(R.id.nodeL0disp_Item_id);
+                TextView nodeName = v.findViewById(R.id.nodeL0disp_Item_name);
+                String node_id = nodeId.getText().toString();
+                String node_name = nodeName.getText().toString();
+                Intent historyIntent = new Intent(getContext(), HistoryActivity.class);
+                historyIntent.putExtra("node_id", node_id);
+                historyIntent.putExtra("node_name", node_name);
+                getContext().startActivity(historyIntent);
+                return true;
+            }
+        });
+
         LinearLayout nodelistParentLayout = listItemView.findViewById(R.id.nodeL0disp_Item_parentLayout);
         setRoundedDrawable(nodelistParentLayout,getContext().getResources().getColor(selectedColor));
 

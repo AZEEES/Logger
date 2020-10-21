@@ -37,6 +37,7 @@ import io.realm.RealmResults;
 public class NodeL2_Activity extends AppCompatActivity {
     private String parent_nodeId;
     private String parent_name;
+    private String view_only;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,16 +58,28 @@ public class NodeL2_Activity extends AppCompatActivity {
             parent_name = "";
         }
 
+        if(getIntent().hasExtra("view_only")){
+            view_only = getIntent().getExtras().getString("view_only");
+        }
+        else {
+            view_only = "";
+        }
+
         TextView nodeL2TextView = findViewById(R.id.nodel2_title);
         nodeL2TextView.setText(parent_name);
 
         TextView nodeTextView = findViewById(R.id.nodeL2_text);
         nodeTextView.setText("parent_node : " + parent_nodeId);
-        get_nodeL1(parent_nodeId);
-        get_nodeL0(parent_nodeId);
+        get_nodeL1(parent_nodeId, view_only);
+        get_nodeL0(parent_nodeId, view_only);
 
         final Button nodeL2submit_btnView = findViewById(R.id.nodeL2_submit);
         final ProgressBar nodeL2progressBar = findViewById(R.id.nodeL2_progressBar);
+
+        if(view_only.equals("1")){
+            nodeL2submit_btnView.setVisibility(View.GONE);
+        }
+
         setRoundedDrawable(nodeL2submit_btnView, getResources().getColor(R.color.buttonColor));
         nodeL2submit_btnView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,8 +153,9 @@ public class NodeL2_Activity extends AppCompatActivity {
         view.setBackgroundDrawable(shape);
     }
 
-    public void get_nodeL0(final String parent_node_id){
+    public void get_nodeL0(final String parent_node_id, final String view_only){
         final Realm realm = Realm.getDefaultInstance();
+        String logger_name = "default";
         realm.beginTransaction();
         final RealmResults<Structure> structures = realm.where(Structure.class).equalTo("parent", parent_node_id).equalTo("level_leaf","L0").findAll();
         if(structures.size()>0){
@@ -159,13 +173,16 @@ public class NodeL2_Activity extends AppCompatActivity {
                 String default_value = currentStructure.getDefault_value();
                 String value = currentStructure.getValue();
                 String unit = currentStructure.getUnit();
+                logger_name = currentStructure.getLoggerName();
                 NodeL0 n1 = new NodeL0(id, name, dtype, slider_entries, lim_low, lim_high, disable_entry, hint_text, default_value, value, unit);
                 nodeList.add(n1);
 //                Toast.makeText(NodeL2_Activity.this, id + "Created", Toast.LENGTH_LONG).show();
                 Log.v("NODETAG", id);
             }
             realm.close();
-            NodeL0Adapter nodeAdapter = new NodeL0Adapter(NodeL2_Activity.this, nodeList);
+            TextView nodeL2LoggerName = findViewById(R.id.nodeL2_loggerName);
+            nodeL2LoggerName.setText(logger_name);
+            NodeL0Adapter nodeAdapter = new NodeL0Adapter(NodeL2_Activity.this, nodeList, view_only);
             ListView nodelistView = (ListView) findViewById(R.id.nodeL2_L0_list);
             nodelistView.setAdapter(nodeAdapter);
             Utilities.setListViewHeightBasedOnItems(nodelistView);
@@ -173,7 +190,7 @@ public class NodeL2_Activity extends AppCompatActivity {
         realm.close();
     }
 
-    public void get_nodeL1(final String parent_node_id){
+    public void get_nodeL1(final String parent_node_id, final String view_only){
         final Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         final RealmResults<Structure> structures = realm.where(Structure.class).equalTo("parent", parent_node_id).equalTo("level_leaf","L1").findAll();
@@ -189,7 +206,7 @@ public class NodeL2_Activity extends AppCompatActivity {
                 nodeList.add(n1);
             }
             realm.close();
-            NodeL1Adapter nodeAdapter = new NodeL1Adapter(NodeL2_Activity.this, nodeList);
+            NodeL1Adapter nodeAdapter = new NodeL1Adapter(NodeL2_Activity.this, nodeList, view_only);
             ListView nodelistView = (ListView) findViewById(R.id.nodeL2_L1_list);
             nodelistView.setAdapter(nodeAdapter);
             Utilities.setListViewHeightBasedOnItems(nodelistView);
