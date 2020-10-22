@@ -115,14 +115,18 @@ router.get('/get_latest_data', (req, res, next)=>{
                 "_id": "$id",
                 "value" : {$last : "$value"},
                 "logger_id" : {$last : "$logger_id"},
-                "logger_id" : {$last : "$logger_name"},
-                "entry_time" : {$last : "$entry_time"}
+                "logger_name" : {$last : "$logger_name"},
+                "entry_time" : {$last : "$_id"}
             }}
         ],(err, result)=>{
             if(err){
                 res.json("Error : " + err);
             }
             else{
+                for(i=0;i<result.length;i++){
+                    res_entry = result[i];
+                    res_entry.entry_time = res_entry.entry_time.getTimestamp();
+                }
                 res.json(result);
             }
         }
