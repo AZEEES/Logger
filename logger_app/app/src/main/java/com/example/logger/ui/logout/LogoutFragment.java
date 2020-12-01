@@ -28,7 +28,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class SyncDataFragment extends Fragment {
 
@@ -38,7 +37,7 @@ public class SyncDataFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         syncDataViewModel =
                 ViewModelProviders.of(this).get(SyncDataViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_syncdata, container, false);
+        View root = inflater.inflate(R.layout.fragment_logout, container, false);
         final TextView textView = root.findViewById(R.id.text_syncdata);
         syncDataViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override

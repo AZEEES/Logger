@@ -16,7 +16,7 @@ export class StructureComponent implements OnInit {
   public structures = [];
   public childs = [];
   public editEnabled = false;
-  public dtypes = ["number", "text", "checkbox", "dropdown"];
+  public dtypes = ["number", "text", "checkbox", "dropdown", "long-text"];
   public bool = true;
 
   public errorMsg;
