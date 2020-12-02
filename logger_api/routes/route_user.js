@@ -38,6 +38,18 @@ router.post('/check_valid',(req, res, next)=>{
     })
 });
 
+router.post('/check_access',(req, res, next)=>{
+    let phone = req.body.phone;
+    User.findOne({phone:phone},(err, user)=>{
+        if(err){
+            res.json(err);
+        }
+        else{
+            res.json(user);
+        }
+    })
+});
+
 //deleting users
 router.delete('/',(req, res, next)=>{
     var _id = req.param("id");
