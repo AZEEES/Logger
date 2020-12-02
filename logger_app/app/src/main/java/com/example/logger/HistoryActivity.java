@@ -84,8 +84,6 @@ public class HistoryActivity extends AppCompatActivity {
                                     dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                                     Date date = dateFormat.parse(datetime);
                                     DateFormat newFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-//                                    TimeZone tz = TimeZone.getTimeZone("India/Kolkata");
-//                                    newFormat.setTimeZone(tz);
                                     datetime = newFormat.format(date);
                                 } catch (Exception e) {
                                     e.printStackTrace();

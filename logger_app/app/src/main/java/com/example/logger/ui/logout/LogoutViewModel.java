@@ -1,16 +1,16 @@
-package com.example.logger.ui.syncdata;
+package com.example.logger.ui.logout;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SyncDataViewModel extends ViewModel {
+public class LogoutViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public SyncDataViewModel() {
+    public LogoutViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("Syncing Data from server");
+        mText.setValue("Logging out from server");
     }
 
     public LiveData<String> getText() {

@@ -11,6 +11,6 @@
     <dimen name="tick_padding">30dp</dimen>
     <dimen name="tick_textSize">24sp</dimen>
 
-    <dimen name="login_iconSize">200dp</dimen>
+    <dimen name="login_iconSize">140dp</dimen>
     <dimen name="login_mini_iconSize">24dp</dimen>
 </resources>

@@ -84,6 +84,17 @@ public class NodeL0DispAdapter extends ArrayAdapter<NodeL0> {
             nodeValue.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
         }
 
+        String dtype = currentNode.get_dtype();
+        if(dtype.equals("long-text")){
+            LinearLayout nodeL0UnitView = listItemView.findViewById(R.id.nodeL0disp_Item_unitView);
+            LinearLayout nodeL0EditView = listItemView.findViewById(R.id.nodeL0disp_Item_valueView);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) nodeL0EditView.getLayoutParams();
+            params.weight = 2.0f;
+            nodeL0EditView.setLayoutParams(params);
+            nodeL0UnitView.setVisibility(View.GONE);
+            nodeValue.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+        }
+
         listItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

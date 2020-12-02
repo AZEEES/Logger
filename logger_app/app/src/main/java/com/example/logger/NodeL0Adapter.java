@@ -35,6 +35,19 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
         this.view_only = view_only;
     }
 
+
+    @Override
+    public int getViewTypeCount() {
+        return getCount();
+//        return super.getViewTypeCount();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+//        return super.getItemViewType(position);
+        return position;
+    }
+
     //    @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -88,7 +101,7 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
         nodeL0UnitTextView.setText(currentNode.get_unit());
         String node_unit = nodeL0UnitTextView.getText().toString();
         String node_value = currentNode.get_value();
-        if(dtype.equals("number") || dtype.equals("text")){
+        if(dtype.equals("number") || dtype.equals("text") || dtype.equals("long-text")){
             String node_name = nodeName.getText().toString();
             if(node_name.equals("Defects")){
                 LinearLayout nodeL0UnitView = listItemView.findViewById(R.id.nodeL0_Item_unitView);
@@ -100,9 +113,19 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
                 nodeEditText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
             }
 
+            if(dtype.equals("long-text")){
+                LinearLayout nodeL0UnitView = listItemView.findViewById(R.id.nodeL0_Item_unitView);
+                LinearLayout nodeL0EditView = listItemView.findViewById(R.id.nodeL0_Item_editView);
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) nodeL0EditView.getLayoutParams();
+                params.weight = 2.0f;
+                nodeL0EditView.setLayoutParams(params);
+                nodeL0UnitView.setVisibility(View.GONE);
+                nodeEditText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+            }
+
             nodeEditText.setVisibility(View.VISIBLE);
             if(dtype.equals("number")){
-                nodeEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                nodeEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED );
             }
             if(dtype.equals("text")){
                 nodeEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);

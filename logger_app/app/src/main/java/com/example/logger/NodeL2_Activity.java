@@ -70,7 +70,7 @@ public class NodeL2_Activity extends AppCompatActivity {
 
         TextView nodeTextView = findViewById(R.id.nodeL2_text);
         nodeTextView.setText("parent_node : " + parent_nodeId);
-        get_nodeL1(parent_nodeId, view_only);
+        get_nodeL1(parent_nodeId, parent_name, view_only);
         get_nodeL0(parent_nodeId, view_only);
 
         final Button nodeL2submit_btnView = findViewById(R.id.nodeL2_submit);
@@ -137,8 +137,8 @@ public class NodeL2_Activity extends AppCompatActivity {
                 }
 
                 Log.v("NODEL2TAG",array.toString());
-                update_data(array, nodeL2submit_btnView, nodeL2progressBar);
-
+//                update_data(array, nodeL2submit_btnView, nodeL2progressBar);
+                check_access(array, nodeL2submit_btnView, nodeL2progressBar);
             }
         });
 
@@ -156,6 +156,8 @@ public class NodeL2_Activity extends AppCompatActivity {
     public void get_nodeL0(final String parent_node_id, final String view_only){
         final Realm realm = Realm.getDefaultInstance();
         String logger_name = "default";
+        String logger_phone = "default";
+        String entry_time = "default";
         realm.beginTransaction();
         final RealmResults<Structure> structures = realm.where(Structure.class).equalTo("parent", parent_node_id).equalTo("level_leaf","L0").findAll();
         if(structures.size()>0){
@@ -174,6 +176,8 @@ public class NodeL2_Activity extends AppCompatActivity {
                 String value = currentStructure.getValue();
                 String unit = currentStructure.getUnit();
                 logger_name = currentStructure.getLoggerName();
+                logger_phone = currentStructure.getLoggerPhone();
+                entry_time = currentStructure.getEntryTime();
                 NodeL0 n1 = new NodeL0(id, name, dtype, slider_entries, lim_low, lim_high, disable_entry, hint_text, default_value, value, unit);
                 nodeList.add(n1);
 //                Toast.makeText(NodeL2_Activity.this, id + "Created", Toast.LENGTH_LONG).show();
@@ -181,7 +185,11 @@ public class NodeL2_Activity extends AppCompatActivity {
             }
             realm.close();
             TextView nodeL2LoggerName = findViewById(R.id.nodeL2_loggerName);
+            TextView nodeL2LoggerPhone = findViewById(R.id.nodeL2_loggerPhone);
+            TextView nodeL2EntryTime = findViewById(R.id.nodeL2_updationTime);
             nodeL2LoggerName.setText(logger_name);
+            nodeL2LoggerPhone.setText(logger_phone);
+            nodeL2EntryTime.setText("Last updated at " +  entry_time);
             NodeL0Adapter nodeAdapter = new NodeL0Adapter(NodeL2_Activity.this, nodeList, view_only);
             ListView nodelistView = (ListView) findViewById(R.id.nodeL2_L0_list);
             nodelistView.setAdapter(nodeAdapter);
@@ -190,7 +198,7 @@ public class NodeL2_Activity extends AppCompatActivity {
         realm.close();
     }
 
-    public void get_nodeL1(final String parent_node_id, final String view_only){
+    public void get_nodeL1(final String parent_node_id, final String parent_name, final String view_only){
         final Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         final RealmResults<Structure> structures = realm.where(Structure.class).equalTo("parent", parent_node_id).equalTo("level_leaf","L1").findAll();
@@ -202,7 +210,7 @@ public class NodeL2_Activity extends AppCompatActivity {
                 String name = currentStructure.getName();
                 String level_leaf = currentStructure.getLevelLeaf();
                 String parent_id = currentStructure.getParent();
-                NodeL1 n1 = new NodeL1(id, name, level_leaf, parent_id);
+                NodeL1 n1 = new NodeL1(id, name, level_leaf, parent_id, parent_name);
                 nodeList.add(n1);
             }
             realm.close();
@@ -249,6 +257,74 @@ public class NodeL2_Activity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("array", array.toString());
+                return params;
+            }
+        }
+                ;
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+    }
+
+    public void check_access(final JSONArray array, final Button nodeL2SubmitButtonView, final ProgressBar nodeL2ProgressBar) {
+        final LoggerApplication loggerApp = ((LoggerApplication) getApplicationContext());
+        String server_ip = loggerApp.get_Server_IP();
+        final String url = "http://" + server_ip + "/api/user/check_access";
+        final Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        User user = realm.where(User.class).equalTo("id", 1).findFirst();
+        final String phone = user.getPhone();
+        realm.close();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.equals("null")) {
+                            Toast.makeText(NodeL2_Activity.this, "App access revoked from user", Toast.LENGTH_LONG).show();
+                            final Realm realm = Realm.getDefaultInstance();
+                            realm.beginTransaction();
+                            User user = realm.where(User.class).equalTo("id", 1).findFirst();
+                            user.setLoginStatus("N");
+                            realm.copyToRealm(user);
+                            realm.commitTransaction();
+                            realm.close();
+                            Intent loginIntent = new Intent(NodeL2_Activity.this , LoginActivity.class);
+                            startActivity(loginIntent);
+                        } else {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                String app_access = jsonObject.getString("app_access");
+                                if (app_access.equals("Y")) {
+                                    update_data(array, nodeL2SubmitButtonView, nodeL2ProgressBar);
+                                }
+                                else{
+                                    Toast.makeText(NodeL2_Activity.this, "App access revoked from user", Toast.LENGTH_LONG).show();
+                                    final Realm realm = Realm.getDefaultInstance();
+                                    realm.beginTransaction();
+                                    User user = realm.where(User.class).equalTo("id", 1).findFirst();
+                                    user.setLoginStatus("N");
+                                    realm.copyToRealm(user);
+                                    realm.commitTransaction();
+                                    realm.close();
+                                    Intent loginIntent = new Intent(NodeL2_Activity.this , LoginActivity.class);
+                                    startActivity(loginIntent);
+                                }
+                            } catch (JSONException e) {
+                                Toast.makeText(NodeL2_Activity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                    },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(NodeL2_Activity.this, "Server issue", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("phone", phone);
                 return params;
             }
         }

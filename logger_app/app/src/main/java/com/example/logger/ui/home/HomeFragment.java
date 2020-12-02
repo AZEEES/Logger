@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,13 +27,24 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.logger.HomeActivity;
 import com.example.logger.LoggerApplication;
+import com.example.logger.LoginActivity;
 import com.example.logger.NodeActivity;
+import com.example.logger.NodeL2_Activity;
 import com.example.logger.R;
 import com.example.logger.Structure;
+import com.example.logger.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -74,7 +86,8 @@ public class HomeFragment extends Fragment {
                     public void onClick(View v) {
                         homeProgressView.setVisibility(View.VISIBLE);
                         homeProgressTextView.setText("Getting data from server");
-                        fetch_data(homeProgressView, homeProgressTextView, init_node_id);
+//                        fetch_data(homeProgressView, homeProgressTextView, init_node_id);
+                        check_access(homeProgressView, homeProgressTextView, init_node_id);
                     }
                 });
 
@@ -105,11 +118,24 @@ public class HomeFragment extends Fragment {
                                 String id = jsonObject.getString("_id");
                                 String value = jsonObject.getString("value");
                                 String logger_name = jsonObject.getString("logger_name");
+                                String logger_phone = jsonObject.getString("logger_id");
+                                String entry_time = jsonObject.getString("entry_time");
+                                try {
+                                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
+                                    dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                                    Date date = dateFormat.parse(entry_time);
+                                    DateFormat newFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                                    entry_time = newFormat.format(date);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                                 resp += id + " : " + value + "\n";
                                 Structure str_edit = realm.where(Structure.class).equalTo("_id", id).findFirst();
                                 if(str_edit!=null){
                                     str_edit.setValue(value);
                                     str_edit.setLoggerName(logger_name);
+                                    str_edit.setLoggerPhone(logger_phone);
+                                    str_edit.setEntryTime(entry_time);
                                 }
                             }
 //                            textView.setText(resp);
@@ -135,6 +161,74 @@ public class HomeFragment extends Fragment {
 //                        homeTextView.setText("Server issue on " + url + "\n" + error.toString());
                     }
                 });
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(stringRequest);
+    }
+
+    public void check_access(final LinearLayout homeProgressView, final TextView homeProgressTextView, final String init_node_id) {
+        final LoggerApplication loggerApp = ((LoggerApplication) getActivity().getApplicationContext());
+        String server_ip = loggerApp.get_Server_IP();
+        final String url = "http://" + server_ip + "/api/user/check_access";
+        final Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        User user = realm.where(User.class).equalTo("id", 1).findFirst();
+        final String phone = user.getPhone();
+        realm.close();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.equals("null")) {
+                            Toast.makeText(getContext(), "App access revoked from user", Toast.LENGTH_LONG).show();
+                            final Realm realm = Realm.getDefaultInstance();
+                            realm.beginTransaction();
+                            User user = realm.where(User.class).equalTo("id", 1).findFirst();
+                            user.setLoginStatus("N");
+                            realm.copyToRealm(user);
+                            realm.commitTransaction();
+                            realm.close();
+                            Intent loginIntent = new Intent(getContext() , LoginActivity.class);
+                            startActivity(loginIntent);
+                        } else {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                String app_access = jsonObject.getString("app_access");
+                                if (app_access.equals("Y")) {
+                                    fetch_data(homeProgressView, homeProgressTextView, init_node_id);
+                                }
+                                else{
+                                    Toast.makeText(getContext(), "App access revoked from user", Toast.LENGTH_LONG).show();
+                                    final Realm realm = Realm.getDefaultInstance();
+                                    realm.beginTransaction();
+                                    User user = realm.where(User.class).equalTo("id", 1).findFirst();
+                                    user.setLoginStatus("N");
+                                    realm.copyToRealm(user);
+                                    realm.commitTransaction();
+                                    realm.close();
+                                    Intent loginIntent = new Intent(getContext() , LoginActivity.class);
+                                    startActivity(loginIntent);
+                                }
+                            } catch (JSONException e) {
+                                Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), "Server issue", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("phone", phone);
+                return params;
+            }
+        }
+                ;
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(stringRequest);
     }

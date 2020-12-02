@@ -93,6 +93,7 @@ public class NodeL1Adapter extends ArrayAdapter<NodeL1> {
                     String node_name = nodeName.getText().toString();
                     Intent nodeActivityIntent = new Intent(getContext(), NodeL1_Activity.class);
                     nodeActivityIntent.putExtra("parent_id", currentNode.getParentId());
+                    nodeActivityIntent.putExtra("parent_name", currentNode.getParentName());
                     nodeActivityIntent.putExtra("node_name", node_name);
                     nodeActivityIntent.putExtra("node_id", node_id);
                     getContext().startActivity(nodeActivityIntent);

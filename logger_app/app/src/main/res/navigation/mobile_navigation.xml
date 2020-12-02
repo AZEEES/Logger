@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_syncstruct" />
 
     <fragment
-        android:id="@+id/nav_syncdata"
-        android:name="com.example.logger.ui.syncdata.SyncDataFragment"
-        android:label="@string/menu_syncdata"
-        tools:layout="@layout/fragment_syncdata" />
+        android:id="@+id/nav_logout"
+        android:name="com.example.logger.ui.logout.LogoutFragment"
+        android:label="@string/menu_logout"
+        tools:layout="@layout/fragment_logout" />
 </navigation>

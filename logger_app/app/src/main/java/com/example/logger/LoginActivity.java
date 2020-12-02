@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -29,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -77,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         final LoggerApplication loggerApp = ((LoggerApplication) getApplicationContext());
         String server_ip = loggerApp.get_Server_IP();
         final String url = "http://" + server_ip + "/api/user/check_valid";
+        final TextView loginProgressText = findViewById(R.id.login_progressText);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -89,28 +92,42 @@ public class LoginActivity extends AppCompatActivity {
                             progressBar.setVisibility(View.GONE);
                         }
                         else{
-                            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                            loginButton.setEnabled(true);
-                            progressBar.setVisibility(View.GONE);
-                            final Realm realm = Realm.getDefaultInstance();
-                            realm.beginTransaction();
-                            User user = realm.where(User.class).equalTo("id", 1).findFirst();
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
-                                user.setName(jsonObject.getString("name"));
-                                user.setPhone(jsonObject.getString("phone"));
-                                user.setRootNode(jsonObject.getString("root_node"));
-                                user.setRootNodeName(jsonObject.getString("root_node_name"));
-                                user.setLoginStatus("Y");
-                                realm.copyToRealmOrUpdate(user);
-                                realm.commitTransaction();
+                                String app_access = jsonObject.getString("app_access");
+                                if(app_access.equals("Y")){
+                                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                                    loginProgressText.setText("Updating data from server... Please wait");
+                                    loginButton.setEnabled(true);
+//                                  progressBar.setVisibility(View.GONE);
+                                    final Realm realm = Realm.getDefaultInstance();
+                                    realm.beginTransaction();
+                                    User user = realm.where(User.class).equalTo("id", 1).findFirst();
+                                    try {
+//                                        JSONObject jsonObject = new JSONObject(response);
+                                        user.setName(jsonObject.getString("name"));
+                                        user.setPhone(jsonObject.getString("phone"));
+                                        user.setRootNode(jsonObject.getString("root_node"));
+                                        user.setRootNodeName(jsonObject.getString("root_node_name"));
+                                        user.setLoginStatus("Y");
+                                        realm.copyToRealmOrUpdate(user);
+                                        realm.commitTransaction();
+                                    }
+                                    catch (JSONException e){
+                                        Toast.makeText(LoginActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                    realm.close();
+                                    sync_structure(progressBar);
+                                }
+                                else{
+                                    Toast.makeText(LoginActivity.this, "App access not available to user", Toast.LENGTH_LONG).show();
+                                }
                             }
                             catch (JSONException e){
                                 Toast.makeText(LoginActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                             }
-                            realm.close();
-                            Intent homeActivityIntent = new Intent(LoginActivity.this, HomeActivity.class);
-                            startActivity(homeActivityIntent);
+
+
                         }
                     }
                 },
@@ -121,7 +138,6 @@ public class LoginActivity extends AppCompatActivity {
                                 .show();
                         loginButton.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
-//                        homeTextView.setText("Server issue on " + url + "\n" + error.toString());
                     }
                 }){
             @Override
@@ -134,6 +150,47 @@ public class LoginActivity extends AppCompatActivity {
         }
                 ;
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+    }
+
+    public void sync_structure(final ProgressBar progressBar) {
+        final LoggerApplication loggerApp = ((LoggerApplication) getApplicationContext());
+        String server_ip = loggerApp.get_Server_IP();
+        final String url = "http://" + server_ip + "/api/structure";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            final Realm realm = Realm.getDefaultInstance();
+                            realm.beginTransaction();
+                            final RealmResults<Structure> structures = realm.where(Structure.class).findAll();
+                            structures.deleteAllFromRealm();
+                            JSONArray jsonArray = new JSONArray(response);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
+                                realm.createObjectFromJson(Structure.class, jsonObject.toString());
+                            }
+                            realm.commitTransaction();
+                            realm.close();
+                            progressBar.setVisibility(View.GONE);
+                            Intent homeActivityIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                            startActivity(homeActivityIntent);
+                        } catch (JSONException e) {
+                            Toast.makeText(LoginActivity.this, "Error Occured", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(LoginActivity.this, "Server issue", Toast.LENGTH_SHORT)
+                                .show();
+//                        homeTextView.setText("Server issue on " + url + "\n" + error.toString());
+                    }
+                });
+        RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
         requestQueue.add(stringRequest);
     }
 }

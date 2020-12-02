@@ -22,6 +22,7 @@ import io.realm.RealmResults;
 public class NodeL1_Activity extends AppCompatActivity {
     private String parent_nodeId;
     private String grandparent_nodeId;
+    private String grandparent_name;
     private String parent_name;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +40,12 @@ public class NodeL1_Activity extends AppCompatActivity {
         }
         else{
             grandparent_nodeId = "na";
+        }
+        if(getIntent().hasExtra("parent_name")){
+            grandparent_name = getIntent().getExtras().getString("parent_name");
+        }
+        else{
+            grandparent_name = "na";
         }
         if(getIntent().hasExtra("node_name")){
             parent_name = getIntent().getExtras().getString("node_name");
@@ -63,7 +70,7 @@ public class NodeL1_Activity extends AppCompatActivity {
                 proceedBtnView.requestFocus();
                 Intent nodeL2Intent = new Intent(NodeL1_Activity.this, NodeL2_Activity.class);
                 nodeL2Intent.putExtra("node_id", grandparent_nodeId);
-//                nodeL2Intent.putExtra("node_name", parent_name);
+                nodeL2Intent.putExtra("node_name", grandparent_name);
                 startActivity(nodeL2Intent);
             }
         });
@@ -103,7 +110,7 @@ public class NodeL1_Activity extends AppCompatActivity {
                 nodeList.add(n1);
             }
             realm.close();
-            NodeL0Adapter nodeAdapter = new NodeL0Adapter(NodeL1_Activity.this, nodeList, "0");
+            NodeL0Adapter nodeAdapter = new NodeL0Adapter(getApplicationContext(), nodeList, "0");
             ListView nodelistView = (ListView) findViewById(R.id.nodeL1_L0_list);
             nodelistView.setAdapter(nodeAdapter);
             Utilities.setListViewHeightBasedOnItems(nodelistView);
