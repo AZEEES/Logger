@@ -64,4 +64,15 @@ router.delete('/',(req, res, next)=>{
     } );
 })
 
+router.delete('/delete_all',(req, res, next)=>{
+    User.remove({}, (err, result)=>{
+        if(err){
+            res.json("Error : " + err);
+        }
+        else{
+            res.json("Succesfully deleted");
+        }
+    } );
+})
+
 module.exports = router;
