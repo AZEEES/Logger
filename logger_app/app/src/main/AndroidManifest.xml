@@ -39,6 +39,9 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".TempActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>

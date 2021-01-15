@@ -19,6 +19,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.RetryPolicy;
 import com.example.logger.LoggerApplication;
 import com.example.logger.R;
 import com.example.logger.Structure;
@@ -86,6 +88,8 @@ public class SyncStructFragment extends Fragment {
                     }
                 });
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RetryPolicy policy = new DefaultRetryPolicy(20000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        stringRequest.setRetryPolicy(policy);
         requestQueue.add(stringRequest);
     }
 }

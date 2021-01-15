@@ -235,6 +235,12 @@ public class NodeL2_Activity extends AppCompatActivity {
                             Toast.makeText(NodeL2_Activity.this, "Success", Toast.LENGTH_SHORT).show();
                             nodeL2SubmitButtonView.setEnabled(true);
                             nodeL2ProgressBar.setVisibility(View.GONE);
+                            final LoggerApplication loggerApp = ((LoggerApplication) getApplicationContext());
+                            final String init_node_id = loggerApp.get_InitNode_Id();
+                            Intent nodeIntent = new Intent(getApplicationContext(), NodeActivity.class);
+                            nodeIntent.putExtra("node_id", init_node_id);
+                            nodeIntent.putExtra("view_only", "1");
+                            startActivity(nodeIntent);
                         }
                         else{
                             Toast.makeText(NodeL2_Activity.this, "Error", Toast.LENGTH_SHORT).show();

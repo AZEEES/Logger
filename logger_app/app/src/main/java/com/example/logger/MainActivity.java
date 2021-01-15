@@ -53,8 +53,10 @@ public class MainActivity extends AppCompatActivity {
         }
         realm.close();
         if(loginStatus.equals("Y")){
-            Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
-            startActivity(homeIntent);
+//            Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+//            startActivity(homeIntent);
+            Intent tempIntent = new Intent(MainActivity.this, TempActivity.class);
+            startActivity(tempIntent);
         }
         else {
             Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
