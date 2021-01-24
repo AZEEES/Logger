@@ -68,6 +68,23 @@ public class NodeL0DispAdapter extends ArrayAdapter<NodeL0> {
         String node_value = currentNode.get_value();
         if(!(node_value.equals("na"))) {
             nodeValue.setText(node_value);
+            String data_type = currentNode.get_dtype();
+            if(data_type.equals("number")){
+                try {
+                    Double node_int = Double.parseDouble(node_value);
+                    Double high_lim = Double.parseDouble(currentNode.get_high_lim());
+                    Double low_lim = Double.parseDouble(currentNode.get_low_lim());
+                    if (node_int >= low_lim && node_int <= high_lim) {
+                        nodeValue.setTextColor(getContext().getResources().getColor(R.color.colorGreen));
+                    } else {
+                        nodeValue.setTextColor(getContext().getResources().getColor(R.color.colorRed));
+                    }
+                }
+                catch (Exception exception){
+                    //do nothing
+//                            Toast.makeText(getContext(), "Exception : " + exception.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
         }
 
         TextView nodeUnitText = listItemView.findViewById(R.id.nodeL0disp_Item_unitText);

@@ -227,7 +227,7 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
                         }
                         catch (Exception exception){
                             //do nothing
-                            Toast.makeText(getContext(), "Exception : " + exception.toString(), Toast.LENGTH_LONG).show();
+//                            Toast.makeText(getContext(), "Exception : " + exception.toString(), Toast.LENGTH_LONG).show();
                         }
                     }
                     currentNode.set_value(node_value);
