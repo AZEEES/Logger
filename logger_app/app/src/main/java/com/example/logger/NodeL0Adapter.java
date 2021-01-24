@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import io.realm.Realm;
@@ -212,6 +213,23 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
                     String node_value = nodeEditText.getText().toString();
+                    String data_type = currentNode.get_dtype();
+                    if(data_type.equals("number")){
+                        try {
+                            Double node_int = Double.parseDouble(node_value);
+                            Double high_lim = Double.parseDouble(currentNode.get_high_lim());
+                            Double low_lim = Double.parseDouble(currentNode.get_low_lim());
+                            if (node_int >= low_lim && node_int <= high_lim) {
+                                nodeEditText.setTextColor(getContext().getResources().getColor(R.color.colorGreen));
+                            } else {
+                                nodeEditText.setTextColor(getContext().getResources().getColor(R.color.colorRed));
+                            }
+                        }
+                        catch (Exception exception){
+                            //do nothing
+                            Toast.makeText(getContext(), "Exception : " + exception.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }
                     currentNode.set_value(node_value);
                     final Realm realm = Realm.getDefaultInstance();
                     realm.beginTransaction();
