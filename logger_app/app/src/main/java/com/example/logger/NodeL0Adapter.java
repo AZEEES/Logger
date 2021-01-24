@@ -211,10 +211,12 @@ public class NodeL0Adapter extends ArrayAdapter<NodeL0> {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
+                    String node_value = nodeEditText.getText().toString();
+                    currentNode.set_value(node_value);
                     final Realm realm = Realm.getDefaultInstance();
                     realm.beginTransaction();
                     Structure structure = realm.where(Structure.class).equalTo("_id", node_id).findFirst();
-                    structure.setValue(nodeEditText.getText().toString());
+                    structure.setValue(node_value);
                     realm.copyToRealmOrUpdate(structure);
                     realm.commitTransaction();
                     realm.close();

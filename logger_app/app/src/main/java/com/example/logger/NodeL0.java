@@ -41,4 +41,8 @@ public class NodeL0 {
     public String get_value() { return mvalue; }
     public String get_unit() { return munit; }
 
+    public void set_value(String value){
+        mvalue = value;
+    }
+
 }

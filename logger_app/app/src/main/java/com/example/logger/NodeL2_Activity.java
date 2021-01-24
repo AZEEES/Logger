@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.net.Uri;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
@@ -28,6 +29,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -185,15 +187,31 @@ public class NodeL2_Activity extends AppCompatActivity {
             }
             realm.close();
             TextView nodeL2LoggerName = findViewById(R.id.nodeL2_loggerName);
-            TextView nodeL2LoggerPhone = findViewById(R.id.nodeL2_loggerPhone);
+            final TextView nodeL2LoggerPhone = findViewById(R.id.nodeL2_loggerPhone);
             TextView nodeL2EntryTime = findViewById(R.id.nodeL2_updationTime);
             nodeL2LoggerName.setText(logger_name);
             nodeL2LoggerPhone.setText(logger_phone);
             nodeL2EntryTime.setText("Last updated at " +  entry_time);
-            NodeL0Adapter nodeAdapter = new NodeL0Adapter(NodeL2_Activity.this, nodeList, view_only);
-            ListView nodelistView = (ListView) findViewById(R.id.nodeL2_L0_list);
-            nodelistView.setAdapter(nodeAdapter);
-            Utilities.setListViewHeightBasedOnItems(nodelistView);
+            nodeL2LoggerPhone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "+91" + nodeL2LoggerPhone.getText()));// Initiates the Intent
+                    startActivity(intent);
+                }
+            });
+
+            if(view_only.equals("1")){
+                NodeL0DispAdapter nodeAdapter = new NodeL0DispAdapter(NodeL2_Activity.this, nodeList);
+                ListView nodelistView = (ListView) findViewById(R.id.nodeL2_L0_list);
+                nodelistView.setAdapter(nodeAdapter);
+                Utilities.setListViewHeightBasedOnItems(nodelistView);
+            }
+            else {
+                NodeL0Adapter nodeAdapter = new NodeL0Adapter(NodeL2_Activity.this, nodeList, view_only);
+                ListView nodelistView = (ListView) findViewById(R.id.nodeL2_L0_list);
+                nodelistView.setAdapter(nodeAdapter);
+                Utilities.setListViewHeightBasedOnItems(nodelistView);
+            }
         }
         realm.close();
     }
