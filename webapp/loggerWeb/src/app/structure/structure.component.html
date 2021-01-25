@@ -1,4 +1,4 @@
-
+<h2 *ngIf="parent_id=='null'" >{{title}}</h2>
 <mat-accordion *ngFor="let child of childs">
     <mat-expansion-panel showToggle (opened)="openPanel(child._id)" *ngIf="!child.is_hidden" (closed)="destroyExpansion()" >
     <mat-expansion-panel-header>

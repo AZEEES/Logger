@@ -25,6 +25,53 @@ router.post('/',(req, res, next)=>{
     })
 });
 
+//updating structures
+router.get('/update',(req, res, next)=>{
+    console.log("Update function called");
+    var id = req.query.id
+    var user = req.query.user;
+    var user = JSON.parse(user);
+    // console.log(structure);
+    User.findByIdAndUpdate(id, user, (err, result)=>{
+        if(err){
+            res.json("Error : " + err);
+        }
+        else{
+            res.json("success");
+        }
+    })
+    // res.json("success");
+})
+
+//updating structures
+router.get('/add',(req, res, next)=>{
+    var id = req.query.id
+    var user = req.query.user;
+    var user = JSON.parse(user);  
+    let newUser = new User(user);
+    newUser.save((err, user)=>{
+        if(err){
+            //console.log(err);
+            res.json("Error occured in saving : " + err);
+        }
+        else{
+            res.json("success");
+        }
+    })
+})
+
+router.get('/delete', (req, res, next)=>{
+    var _id = req.query.id;
+    User.remove({_id : _id}, (err, result)=>{
+        if(err){
+            res.json("Error : " + err);
+        }
+        else{
+            res.json("success");
+        }
+    } );
+})
+
 router.post('/check_valid',(req, res, next)=>{
     let phone = req.body.phone;
     let password = req.body.password;

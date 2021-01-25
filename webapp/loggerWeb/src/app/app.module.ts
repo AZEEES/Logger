@@ -13,12 +13,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule, MatSelect } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import { UserComponent } from './user/user.component';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule, MatCardMdImage } from '@angular/material/card';
 
  
 @NgModule({
   declarations: [
     AppComponent,
-    StructureComponent
+    StructureComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +34,9 @@ import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
     MatInputModule,
     MatSelectModule,
     FormsModule, 
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatListModule,
+    MatCardModule
   ],
   providers: [StructureService],
   bootstrap: [AppComponent]

@@ -1,9 +1,0 @@
-<mat-card class="card">
-    <mat-card-content class="card-content">
-        <h4 class='card-header'>{{l2Name}}</h4>
-        <div *ngFor="let child of childs">
-            <app-l1view *ngIf="child.level_leaf=='L1'" node_id={{child._id}} node_name={{child.name}} ></app-l1view>
-            <app-l0view *ngIf="child.level_leaf=='L0'" node_id={{child._id}} node_name={{child.name}}></app-l0view>
-        </div>
-    </mat-card-content>
-  </mat-card>

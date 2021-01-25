@@ -10,8 +10,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 export class StructureComponent implements OnInit {
 
-  @Input() parent_id : string;
+  @Input() parent_id : string = 'null';
 
+  public title = "Structure Admin";
   public panelOpenState = false;
   public structures = [];
   public childs = [];
