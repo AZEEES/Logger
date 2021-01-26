@@ -72,6 +72,19 @@ router.get('/delete', (req, res, next)=>{
     } );
 })
 
+router.get('/check_valid',(req, res, next)=>{
+    let phone = req.query.phone;
+    let password = req.query.password;
+    User.findOne({phone:phone, password:password},(err, user)=>{
+        if(err){
+            res.json(err);
+        }
+        else{
+            res.json(user);
+        }
+    })
+});
+
 router.post('/check_valid',(req, res, next)=>{
     let phone = req.body.phone;
     let password = req.body.password;

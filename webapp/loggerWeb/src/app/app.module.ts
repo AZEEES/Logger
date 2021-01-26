@@ -16,13 +16,16 @@ import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { UserComponent } from './user/user.component';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule, MatCardMdImage } from '@angular/material/card';
+import { LoginComponent } from './login/login.component';
+import { MatIconModule } from '@angular/material/icon';
 
  
 @NgModule({
   declarations: [
     AppComponent,
     StructureComponent,
-    UserComponent
+    UserComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +39,9 @@ import { MatCardModule, MatCardMdImage } from '@angular/material/card';
     FormsModule, 
     MatSnackBarModule,
     MatListModule,
-    MatCardModule
+    MatCardModule,
+    MatIconModule,
+  
   ],
   providers: [StructureService],
   bootstrap: [AppComponent]

@@ -21,10 +21,16 @@ h2 {
     margin-right: 5vw;
 }
 
+.btnCont{
+    justify-content: flex-end;
+    display: flex;
+}
+
 .addButton{
-    display: block;
+    /* display: flex; */
+    margin-right: 1vw;
     height: 5vh;
-    margin-left: 80vw;
+    /* justify-content: flex-end; */
 }
 
 .hiddenTextClass{

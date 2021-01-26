@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from '../user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -12,12 +13,25 @@ export class UserComponent implements OnInit {
   public title = "User Admin";
   public users = [];
   public errorMsg;
-  public options = ["Y","N"];
+  public options_webapp = ["Y","N"];
+  public options_android = ["Y","N"];
+  public webapp_access = "N";
+  public logged_user;
 
-  constructor(private _userService : UserService, private _snackBar : MatSnackBar) { }
+  constructor(
+    private _userService : UserService, 
+    private _snackBar : MatSnackBar, 
+    private _router : Router,
+    private _route : ActivatedRoute
+    ) {}
 
   ngOnInit(): void {
     this.get_users();
+    this.webapp_access =  this._route.snapshot.paramMap.get('webapp_access');
+    this.logged_user =  this._route.snapshot.paramMap.get('name');
+    if(this.webapp_access=='X'){
+      this.options_webapp.push('X');
+    }
   }
 
   editEnable(user){
@@ -72,6 +86,10 @@ export class UserComponent implements OnInit {
     this._userService.deleteUser(user._id)
       .subscribe(data => { this.openSnackBar("Deleting ", data); user.is_hidden=true; },
                 error => this.errorMsg = error);
+  }
+
+  structure_admin(){
+    this._router.navigate(['../','structure'], { skipLocationChange: true });
   }
 
   openSnackBar(message: string, action: string) {
