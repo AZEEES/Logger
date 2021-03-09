@@ -126,7 +126,49 @@ router.get('/getchilds', (req, res, next)=>{
             res.json(structures);
         }
     })
+})
 
+//Fetch all entries by regex 
+router.post('/get_all_L0_from_L2', (req, res, next)=>{
+    var parent = req.query.parent;
+    var child_ids = [];
+    Structure.find({
+        parent : parent
+    }, async (err, structures) => {
+        try{
+            if(err){
+                res.json("Error");
+            }
+            else{   
+                for (let structure of structures){
+                    if(structure["level_leaf"]=="L0"){
+                        child_ids.push(structure["_id"]);
+                    }
+                    else {
+                        parent = structure["_id"];
+                        await Structure.find({
+                            parent : parent
+                        }, (err, structures_l1) => {
+                            if(err){
+                                console.log(err);
+                                // pass
+                            }
+                            else{
+                                for(let structure_l1 of structures_l1){
+                                    child_ids.push(structure_l1["_id"]);
+                                }
+                            }
+                        }
+                        )
+                    }
+                }
+            }
+        }
+        catch{
+            console.log("Error in L0 from L2 api");
+            }
+            res.json(child_ids);
+    })
 })
 
 //Fetch all entries by regex 
@@ -142,7 +184,6 @@ router.get('/getall', (req, res, next)=>{
             res.json(structures);
         }
     })
-
 })
 
 

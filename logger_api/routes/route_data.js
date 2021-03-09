@@ -133,5 +133,26 @@ router.get('/get_latest_data', (req, res, next)=>{
     ) ;
 })
 
+router.get('/get_latest_data_id', (req, res, next)=>{
+    var l0_ids = JSON.parse(req.body.l0_ids);
+    Data.find({id : { $in :   l0_ids }},
+        ['_id','value','entry_time','logger_id','logger_name','id'], // Columns to Return
+        {
+            skip:0, // Starting Row
+            limit: l0_ids.length, // Ending Row
+            sort:{
+                _id: -1 //Sort by Date Added DESC
+            }
+        }
+    ,(err, datas)=>{
+        for(i=0;i<datas.length;i++){
+            data = datas[i];
+            data.entry_time = data._id.getTimestamp();
+            // console.log(data._id.getTimestamp())
+        }
+        res.json(datas);
+    })
+})
+
 
 module.exports = router;
