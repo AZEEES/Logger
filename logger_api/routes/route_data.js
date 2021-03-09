@@ -133,7 +133,7 @@ router.get('/get_latest_data', (req, res, next)=>{
     ) ;
 })
 
-router.get('/get_latest_data_id', (req, res, next)=>{
+router.post('/get_latest_data_id', (req, res, next)=>{
     var l0_ids = JSON.parse(req.body.l0_ids);
     console.log('**************');
     console.log(l0_ids);
