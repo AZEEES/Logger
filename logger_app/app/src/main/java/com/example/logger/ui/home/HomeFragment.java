@@ -3,6 +3,7 @@ package com.example.logger.ui.home;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +86,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         homeProgressView.setVisibility(View.VISIBLE);
-                        homeProgressTextView.setText("Getting data from server");
+                        homeProgressTextView.setText("Checking User access");
 //                        fetch_data(homeProgressView, homeProgressTextView, init_node_id);
                         check_access(homeProgressView, homeProgressTextView, init_node_id);
                     }
@@ -107,8 +108,8 @@ public class HomeFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-//                        homeTextView.setText(response.toString());
                         try {
+                            Log.v("HOMEFRAG", response.toString());
                             final Realm realm = Realm.getDefaultInstance();
                             realm.beginTransaction();
                             JSONArray jsonArray = new JSONArray(response);
@@ -194,7 +195,12 @@ public class HomeFragment extends Fragment {
                                 JSONObject jsonObject = new JSONObject(response);
                                 String app_access = jsonObject.getString("app_access");
                                 if (app_access.equals("Y")) {
-                                    fetch_data(homeProgressView, homeProgressTextView, init_node_id);
+//                                    fetch_data(homeProgressView, homeProgressTextView, init_node_id);
+                                    Intent nodeIntent = new Intent(getContext(), NodeActivity.class);
+                                    nodeIntent.putExtra("node_id", init_node_id);
+                                    nodeIntent.putExtra("view_only", "1");
+                                    startActivity(nodeIntent);
+
                                 }
                                 else{
                                     Toast.makeText(getContext(), "App access revoked from user", Toast.LENGTH_LONG).show();

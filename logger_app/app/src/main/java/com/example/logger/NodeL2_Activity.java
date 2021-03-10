@@ -20,6 +20,7 @@ import org.json.JSONException;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,12 +29,18 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.TimeZone;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
 public class NodeL2_Activity extends AppCompatActivity {
@@ -67,6 +74,18 @@ public class NodeL2_Activity extends AppCompatActivity {
             view_only = "";
         }
 
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetch_all_L0s();
+                ProgressBar refreshBar = (ProgressBar) findViewById(R.id.nodeL2_refresh_bar);
+                refreshBar.setVisibility(View.VISIBLE);
+                pullToRefresh.setRefreshing(false);
+            }
+        });
+
+        fetch_all_L0s();
         TextView nodeL2TextView = findViewById(R.id.nodel2_title);
         nodeL2TextView.setText(parent_name);
 
@@ -349,6 +368,114 @@ public class NodeL2_Activity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("phone", phone);
+                return params;
+            }
+        }
+                ;
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+    }
+
+    public void fetch_all_L0s() {
+        final LoggerApplication loggerApp = ((LoggerApplication) getApplicationContext());
+        String server_ip = loggerApp.get_Server_IP();
+        final String url = "http://" + server_ip + "/api/structure/get_all_L0_from_L2";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(NodeL2_Activity.this, response.toString(), Toast.LENGTH_SHORT).show();
+                          try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                fetch_L0_data(jsonArray);
+                            } catch (JSONException e) {
+                                Toast.makeText(NodeL2_Activity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(NodeL2_Activity.this, "Server issue", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("parent", parent_nodeId);
+                return params;
+            }
+        }
+                ;
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+    }
+
+    public void fetch_L0_data(final JSONArray L0_resp) {
+        final LoggerApplication loggerApp = ((LoggerApplication) getApplicationContext());
+        String server_ip = loggerApp.get_Server_IP();
+//        Toast.makeText(NodeL2_Activity.this, L0_resp.toString(), Toast.LENGTH_LONG).show();
+        final String url = "http://" + server_ip + "/api/data/get_latest_data_id";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+//                            Toast.makeText(NodeL2_Activity.this, response.toString(), Toast.LENGTH_LONG).show();
+                            final Realm realm = Realm.getDefaultInstance();
+                            realm.beginTransaction();
+                            JSONArray jsonArray = new JSONArray(response);
+                            String resp = "";
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
+                                String id = jsonObject.getString("id");
+                                String value = jsonObject.getString("value");
+                                String logger_name = jsonObject.getString("logger_name");
+                                String logger_phone = jsonObject.getString("logger_id");
+                                String entry_time = jsonObject.getString("entry_time");
+                                try {
+                                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
+                                    dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                                    Date date = dateFormat.parse(entry_time);
+                                    DateFormat newFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                                    entry_time = newFormat.format(date);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                resp += id + " : " + value + "\n";
+                                Structure str_edit = realm.where(Structure.class).equalTo("_id", id).findFirst();
+                                if(str_edit!=null){
+                                    str_edit.setValue(value);
+                                    str_edit.setLoggerName(logger_name);
+                                    str_edit.setLoggerPhone(logger_phone);
+                                    str_edit.setEntryTime(entry_time);
+                                }
+                            }
+                            realm.commitTransaction();
+                            realm.close();
+                            get_nodeL1(parent_nodeId, parent_name, view_only);
+                            get_nodeL0(parent_nodeId, view_only);
+                            ProgressBar refreshBar = (ProgressBar) findViewById(R.id.nodeL2_refresh_bar);
+                            refreshBar.setVisibility(View.GONE);
+//
+                        } catch (JSONException e) {
+                            Toast.makeText(NodeL2_Activity.this, "Error Occured" + e.toString(), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(NodeL2_Activity.this, "Server issue", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("l0_ids", L0_resp.toString());
                 return params;
             }
         }

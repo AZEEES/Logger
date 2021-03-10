@@ -131,7 +131,6 @@ router.get('/getchilds', (req, res, next)=>{
 //Fetch all entries by regex 
 router.post('/get_all_L0_from_L2', (req, res, next)=>{
     var parent = req.body.parent;
-    console.log(parent);
     var child_ids = [];
     Structure.find({
         parent : parent
